@@ -19,6 +19,10 @@ VALID_SORT_FIELDS = {
 HOMEPAGE_CACHE_ENABLED = true
 
 topN_query_cache = {}
+homepage_summary_result = false
+mv = false
+mce = false
+up = false
 
 # #
 # # Grabs the 'top rankings' data for display on the homepage.
