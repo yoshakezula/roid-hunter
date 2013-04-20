@@ -9,6 +9,8 @@ var express = require('express')
   , lookup = require('./lookup.js')
   , mailer = require('./mailer.js')
   , fs = require('fs')
+  , stylus = require('stylus')
+  , nib = require('nib')
 
 // Express config
 app.set('views', __dirname + '/views');
@@ -23,6 +25,21 @@ app.use(express.bodyParser());
 var DEV_PORT = 19590;
 var PROD_PORT = 9590;
 var IS_PRODUCTION = process.env.NODE_ENV === 'production';
+
+if (!IS_PRODUCTION) {
+  console.log('compiling stylus');
+  app.use(stylus.middleware({
+    src: __dirname + '/public',
+    compile: function(str, path) {
+      console.log(str);
+      return stylus(str)
+        .set('filename', path)
+        .set('warn', true)
+        .set('compress', true)
+        .use(nib());
+    }
+  }));
+}
 
 // Minification
 console.log('Bundling....');
@@ -95,7 +112,7 @@ app.get('/top', function(req, res) {
   //     res.send({results:result});
   //   }
   // });
-  fs.readFile('top.json', function(err, data) {
+  fs.readFile('top_full_data.json', function(err, data) {
     res.send(JSON.parse(data));
   });
 });

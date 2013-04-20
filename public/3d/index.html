@@ -1,10 +1,13 @@
 <!doctype html>
 <html>
 	<head>
-		<title>3D Interactive Asteroid Space Visualization - Asterank</title>
+		<title>Manned Asteroid Mission Targets - RoidHunter</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link  href="css/main.css" rel="stylesheet"/>
+    <link  href="css/app.css" rel="stylesheet"/>
+    <link  href="//fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet"/>
+    
 	</head>
 <body>
   <noscript>Sorry, this page requires Canvas/WebGL, so you'll need to enable JavaScript.</noscript>
@@ -110,9 +113,23 @@
       }
     }
   </script>
-
-  <div id="sidebar">
+  <div id="app-wrapper">
+    <div id="header">
+      NASA plans to launch a mission to lasso a 25ft asteroid in 2025<br> We're visualizing which asteroids are the easiest to reach
+    </div>
+    <div id="sidebar">
+      <div class="btn-group" data-toggle="buttons-radio">
+        <button type="button" class="btn btn-primary">Shortest Roundtrip</button>
+        <button type="button" class="btn btn-primary">Least Energy</button>
+      </div>
+    </div>
+    <div id="asteroid-list">
+      <table class="table">
+        
+      </table>
+    </div>
   </div>
+
 	<!-- three.js container -->
   <div id="container"></div>
 	<!-- info on screen display -->

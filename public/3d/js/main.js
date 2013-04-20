@@ -95,16 +95,7 @@ $(function() {
     window.onload = function() {
       var text = new ViewUI();
       var gui = new dat.GUI();
-      gui.add(text, 'Cost effective');
-      gui.add(text, 'Most valuable');
-      gui.add(text, 'Most accessible');
-      gui.add(text, 'movement').onChange(function() {
-        object_movement_on = !object_movement_on;
-        toggleSimulation(object_movement_on);
-      });
-      gui.add(text, 'planet orbits').onChange(function() {
-        togglePlanetOrbits();
-      });
+
       gui.add(text, 'display date').onChange(function(val) {
         var newdate = Date.parse(val);
         if (newdate) {

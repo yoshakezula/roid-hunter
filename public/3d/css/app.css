@@ -1,0 +1,6 @@
+@import "bootstrap-combined.min.css";
+body{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif !important}
+#app-wrapper{z-index:10;position:absolute;top:10px;left:10px;margin-right:10px}
+#header{background-color:rgba(255,255,255,0.8);font-size:18px;padding:5px 10px}
+#sidebar{top:55px;left:10px;margin-top:15px}
+#ast-list{margin-top:10px;background-color:rbga(255,255,255,.6)}

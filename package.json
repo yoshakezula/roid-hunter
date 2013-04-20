@@ -11,6 +11,8 @@
       , "mongolian": "latest"
       , "sendmail": "latest"
       , "bundle-up": "latest"
+      , "stylus": "latest"
+      , "nib": "latest"
     }
   , "devDependencies": {
     }
