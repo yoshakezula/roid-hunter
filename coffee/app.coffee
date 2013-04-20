@@ -19,7 +19,7 @@ app.use(express.bodyParser())
 
 DEV_PORT = 3000
 PROD_PORT = 80
-IS_PRODUCTION = process.env.NODE_ENV == 'production'
+IS_PRODUCTION = (process.env.NODE_ENV == 'production')
 
 # Minification
 console.log 'Bundling....'
@@ -121,7 +121,11 @@ renderWithContext = (res, template, obj) ->
 	res.render template, obj
 
 # Start server
-port = process.env.PORT || (IS_PRODUCTION ? PROD_PORT : DEV_PORT)
+if process.env.PORT
+	port = process.env.PORT
+else
+	port = DEV_PORT
+	port = PROD_PORT if IS_PRODUCTION
 app.listen port
 
 console.log 'Running in context:', process.env.NODE_ENV

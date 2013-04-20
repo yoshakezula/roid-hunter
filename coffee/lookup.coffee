@@ -20,8 +20,6 @@ HOMEPAGE_CACHE_ENABLED = true
 
 topN_query_cache = {}
 
-homepage_summary_result  #  cache of summary results
-
 # #
 # # Grabs the 'top rankings' data for display on the homepage.
 # # Lazily cache.
