@@ -161,6 +161,9 @@ $(function() {
     var cameraW	= cameraH / window.innerHeight * window.innerWidth;
     window.cam = camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
     setDefaultCameraPosition();
+
+ 
+
     //camera.position.set(22.39102192510384, -124.78460848134833, -55.29382439584528);
     //camera.position.set(12.39102192510384, -124.78460848134833, -75.29382439584528);
 
@@ -325,6 +328,63 @@ $(function() {
       scene.add(mesh);
     }
 
+    // camera.fov = 100;
+    // camera.updateProjectionMatrix();
+    
+    //initiate variables
+    var firstValidFrame = null
+    var cameraRadius = 290;
+    var rotateY = 90, rotateX = 0, curY = 0
+    var fov = camera.fov;
+    var zoom = 0;
+    var zoomFactor = 0;
+
+
+    function map(value, inputMin, inputMax, outputMin, outputMax) {
+      var outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);  
+      if(outVal >  outputMax){
+        outVal = outputMax;
+      }
+      if(outVal <  outputMin){
+        outVal = outputMin;
+      } 
+      return outVal;
+    } 
+
+    var controllerOptions = {enableGestures: true};
+    Leap.loop(controllerOptions, function(frame) {
+      if (frame.valid) {
+        if (!firstValidFrame) firstValidFrame = frame
+        var t = firstValidFrame.translation(frame)
+
+        //limit y-axis between 0 and 180 degrees
+        curY = map(t[1], -300, 300, 0, 179)
+
+        //assign rotation coordinates
+        rotateX = t[0]
+        rotateY = t[1]//-curY
+        // console.log(rotateX, rotateY);
+
+        // lower fov = closer
+
+        zoom = Math.max(0, t[2]);
+        //lower the denom of zoom, higher the zoom degree
+        zoomFactor = 1/(1 + (zoom / 150));
+        // console.log(t[2], zoomFactor);
+        
+        // //adjust 3D spherical coordinates of the camera
+        camera.position.x = zoomFactor * (cameraRadius * Math.sin(rotateY * .01) * Math.cos(rotateX * .01));
+        camera.position.z = zoomFactor * (cameraRadius * Math.sin(rotateY * .01) * Math.sin(rotateX * .01));
+        camera.position.y = zoomFactor * (cameraRadius * Math.cos(rotateY * .01));
+
+        console.log(zoomFactor);
+        // camera.fov = fov * zoomFactor;
+        // camera.updateProjectionMatrix();
+      }
+    });
+
+    setInterval(function() {console.log(camera.position)},1000);
+
     $('#container').on('mousedown', function() {
       camera_fly_around = false;
     });
@@ -385,7 +445,7 @@ $(function() {
     locked_object_color = null;
 
     // reset camera pos so subsequent locks don't get into crazy positions
-    setNeutralCameraPosition();
+    // setNeutralCameraPosition();
   }
 
   function setLock(full_name) {
@@ -794,7 +854,7 @@ $(function() {
         cameraControls.target = new THREE.Vector3(pos[0], pos[1], pos[2]);
       }
       else {
-        setNeutralCameraPosition();
+        // setNeutralCameraPosition();
       }
     }
 
