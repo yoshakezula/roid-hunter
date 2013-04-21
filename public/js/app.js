@@ -916,16 +916,10 @@
     renderer.render(scene, camera);
   }
 
-
-
-
-
-  console.log('request targets');
   $.ajax({
     url: '/top-targets',
     success: function(data) {
       targets_map = data;
-      console.log('got targets');
       populateTargetsTable();
     },
     dataType: 'json'
