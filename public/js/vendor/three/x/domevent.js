@@ -19,7 +19,7 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 	// # use the object oriented api
 	//
 	// You bind an event like this
-	// 
+	//
 	// ```mesh.on('click', function(object3d){ ... })```
 	//
 	// To unbind an event, just do
@@ -51,7 +51,7 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 	// First, you instanciate the object
 	//
 	// ```var domEvent = new THREEx.DomEvent();```
-	// 
+	//
 	// Then you bind an event like this
 	//
 	// ```domEvent.bind(mesh, 'click', function(object3d){ object3d.scale.x *= 2; });```
@@ -60,7 +60,7 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 	//
 	// ```domEvent.unbind(mesh, 'click', callback);```
 	//
-	// 
+	//
 	// # Code
 
 	//
@@ -157,7 +157,7 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 		console.assert( THREEx.DomEvent.eventNames.indexOf(eventName) !== -1, "not available events:"+eventName );
 
 		if( !this._objectCtxIsInit(object3d) )	this._objectCtxInit(object3d);
-		var objectCtx	= this._objectCtxGet(object3d);	
+		var objectCtx	= this._objectCtxGet(object3d);
 		if( !objectCtx[eventName+'Handlers'] )	objectCtx[eventName+'Handlers']	= [];
 
 		objectCtx[eventName+'Handlers'].push({
@@ -362,7 +362,7 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 
 		var mouseX	= +(domEvent.touches[ 0 ].pageX / window.innerWidth ) * 2 - 1;
 		var mouseY	= -(domEvent.touches[ 0 ].pageY / window.innerHeight) * 2 + 1;
-		return this._onEvent(eventName, mouseX, mouseY, domEvent);	
+		return this._onEvent(eventName, mouseX, mouseY, domEvent);
 	}
 
 });

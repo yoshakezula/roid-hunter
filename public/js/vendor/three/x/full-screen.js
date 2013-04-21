@@ -13,7 +13,8 @@ define(['utilities/window','three','gl-capability'],function(window) {
 	//
 
 	/** @namespace */
-	window.THREEx.FullScreen = {};
+	window.THREEx		= THREEx 		|| {};
+	window.THREEx.FullScreen	= THREEx.FullScreen	|| {};
 
 	/**
 	 * test if it is possible to have fullscreen
@@ -79,7 +80,7 @@ define(['utilities/window','three','gl-capability'],function(window) {
 	/**
 	 * Bind a key to renderer screenshot
 	*/
-	window.THREEx.FullScreen.bindKey = function(opts){
+	window.THREEx.FullScreen.bindKey	= function(opts){
 		opts		= opts		|| {};
 		var charCode	= opts.charCode	|| 'f'.charCodeAt(0);
 		var dblclick	= opts.dblclick !== undefined ? opts.dblclick : false;
@@ -94,13 +95,12 @@ define(['utilities/window','three','gl-capability'],function(window) {
 		}
 
 		// callback to handle keypress
-		var __bind	= function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-		var onKeyPress	= __bind(function(event){
+		var onKeyPress	= function(event){
 			// return now if the KeyPress isnt for the proper charCode
 			if( event.which !== charCode )	return;
 			// toggle fullscreen
 			toggle();
-		}, this);
+		}.bind(this);
 
 		// listen to keypress
 		// NOTE: for firefox it seems mandatory to listen to document directly

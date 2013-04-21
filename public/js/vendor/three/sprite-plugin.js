@@ -238,9 +238,9 @@ define(['utilities/window','three','vector3','shader-sprite'],function(window) {
 					scale[ 0 ] *= size * invAspect * sprite.scale.x
 					scale[ 1 ] *= size * sprite.scale.y;
 
-					_gl.uniform2f( uniforms.uvScale, material.uvScale.x, material.uvScale.y );
-					_gl.uniform2f( uniforms.uvOffset, material.uvOffset.x, material.uvOffset.y );
-					_gl.uniform2f( uniforms.alignment, material.alignment.x, material.alignment.y );
+					_gl.uniform2f( uniforms.uvScale, 0, 0 );
+					_gl.uniform2f( uniforms.uvOffset, 0, 0 );
+					_gl.uniform2f( uniforms.alignment, 0, 0 );
 
 					_gl.uniform1f( uniforms.opacity, material.opacity );
 					_gl.uniform3f( uniforms.color, material.color.r, material.color.g, material.color.b );

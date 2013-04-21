@@ -1,12 +1,10 @@
 define(['utilities/window','gl-capability','three','event-target'],function(window) {
+
 	/**
 	 * @author Eberhard Graether / http://egraether.com/
-	 * some changes, eg. scroll support by Ian Webster ianww.com
 	 */
 
-	window.THREE.TrackballControlsX = function ( object, domElement ) {
-
-		THREE.EventTarget.call( this );
+	window.THREE.TrackballControls = function ( object, domElement ) {
 
 		var _this = this,
 		STATE = { NONE : -1, ROTATE : 0, ZOOM : 1, PAN : 2 };
@@ -39,9 +37,7 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 		// internals
 
-		this.target = new THREE.Vector3();
-
-		var lastPosition = new THREE.Vector3();
+		this.target = new THREE.Vector3( 0, 0, 0 );
 
 		var _keyPressed = false,
 		_state = STATE.NONE,
@@ -57,10 +53,6 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 		_panStart = new THREE.Vector2(),
 		_panEnd = new THREE.Vector2();
 
-		// events
-
-		var changeEvent = { type: 'change' };
-
 
 		// methods
 
@@ -74,7 +66,7 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 		};
 
-		this.getMouseOnScreen = function ( clientX, clientY ) {
+		this.getMouseOnScreen = function( clientX, clientY ) {
 
 			return new THREE.Vector2(
 				( clientX - _this.screen.offsetLeft ) / _this.radius * 0.5,
@@ -83,7 +75,7 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 		};
 
-		this.getMouseProjectionOnBall = function ( clientX, clientY ) {
+		this.getMouseProjectionOnBall = function( clientX, clientY ) {
 
 			var mouseOnBall = new THREE.Vector3(
 				( clientX - _this.screen.width * 0.5 - _this.screen.offsetLeft ) / _this.radius,
@@ -106,30 +98,29 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 			_eye.copy( _this.object.position ).sub( _this.target );
 
 			var projection = _this.object.up.clone().setLength( mouseOnBall.y );
-			projection.addSelf( _this.object.up.clone().crossSelf( _eye ).setLength( mouseOnBall.x ) );
-			projection.addSelf( _eye.setLength( mouseOnBall.z ) );
+			projection.add( _this.object.up.clone().cross( _eye ).setLength( mouseOnBall.x ) );
+			projection.add( _eye.setLength( mouseOnBall.z ) );
 
 			return projection;
 
 		};
 
-		this.rotateCamera = function () {
+		this.rotateCamera = function() {
 
 			var angle = Math.acos( _rotateStart.dot( _rotateEnd ) / _rotateStart.length() / _rotateEnd.length() );
 
 			if ( angle ) {
 
-				var axis = ( new THREE.Vector3() ).cross( _rotateStart, _rotateEnd ).normalize(),
+				var axis = ( new THREE.Vector3() ).crossVectors( _rotateStart, _rotateEnd ).normalize(),
 					quaternion = new THREE.Quaternion();
 
 				angle *= _this.rotateSpeed;
 
 				quaternion.setFromAxisAngle( axis, -angle );
 
-				quaternion.multiplyVector3( _eye );
-				quaternion.multiplyVector3( _this.object.up );
-
-				quaternion.multiplyVector3( _rotateEnd );
+				_eye.applyQuaternion(quaternion);
+				_this.object.up.applyQuaternion(quaternion);
+				_rotateEnd.applyQuaternion(quaternion);
 
 				if ( _this.staticMoving ) {
 
@@ -146,7 +137,7 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 		};
 
-		this.zoomCamera = function () {
+		this.zoomCamera = function() {
 
 			var factor = 1.0 + ( _zoomEnd.y - _zoomStart.y ) * _this.zoomSpeed;
 
@@ -168,7 +159,7 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 		};
 
-		this.panCamera = function () {
+		this.panCamera = function() {
 
 			var mouseChange = _panEnd.clone().sub( _panStart );
 
@@ -177,10 +168,10 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 				mouseChange.multiplyScalar( _eye.length() * _this.panSpeed );
 
 				var pan = _eye.clone().crossSelf( _this.object.up ).setLength( mouseChange.x );
-				pan.addSelf( _this.object.up.clone().setLength( mouseChange.y ) );
+				pan.add( _this.object.up.clone().setLength( mouseChange.y ) );
 
-				_this.object.position.addSelf( pan );
-				_this.target.addSelf( pan );
+				_this.object.position.add( pan );
+				_this.target.add( pan );
 
 				if ( _this.staticMoving ) {
 
@@ -188,7 +179,7 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 				} else {
 
-					_panStart.addSelf( mouseChange.sub( _panEnd, _panStart ).multiplyScalar( _this.dynamicDampingFactor ) );
+					_panStart.add( mouseChange.sub( _panEnd, _panStart ).multiplyScalar( _this.dynamicDampingFactor ) );
 
 				}
 
@@ -196,7 +187,7 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 		};
 
-		this.checkDistances = function () {
+		this.checkDistances = function() {
 
 			if ( !_this.noZoom || !_this.noPan ) {
 
@@ -216,9 +207,9 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 		};
 
-		this.update = function () {
+		this.update = function() {
 
-			_eye.copy( _this.object.position ).sub( _this.target );
+			_eye.copy( _this.object.position ).sub( this.target );
 
 			if ( !_this.noRotate ) {
 
@@ -244,15 +235,8 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 			_this.object.lookAt( _this.target );
 
-			if ( lastPosition.distanceTo( _this.object.position ) > 0 ) {
-
-				_this.dispatchEvent( changeEvent );
-
-				lastPosition.copy( _this.object.position );
-
-			}
-
 		};
+
 
 		// listeners
 
@@ -302,8 +286,8 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 			if ( ! _this.enabled ) return;
 
-			//event.preventDefault();
-			//event.stopPropagation();
+			event.preventDefault();
+			event.stopPropagation();
 
 			if ( _state === STATE.NONE ) {
 
@@ -372,32 +356,11 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 		};
 
-	  function mousescroll(event) {
-	    if (!event) /* For IE. */
-	      event = window.event;
-	    if (event.wheelDelta) { /* IE/Opera. */
-	      delta = event.wheelDelta;
-	    } else if (event.detail) { /** Mozilla case. */
-	      /** In Mozilla, sign of delta is different than in IE.
-	       */
-	      delta = -event.detail*40;
-	    }
-	    delta *= 0.2;
-	    _zoomStart = _this.getMouseOnScreen( event.clientX + delta, event.clientY + delta );
-	    _zoomEnd = _this.getMouseOnScreen( event.clientX, event.clientY );
-	  }
-
 		this.domElement.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
 
 		this.domElement.addEventListener( 'mousemove', mousemove, false );
 		this.domElement.addEventListener( 'mousedown', mousedown, false );
 		this.domElement.addEventListener( 'mouseup', mouseup, false );
-		this.domElement.addEventListener( 'mouseup', mouseup, false );
-	  //adding the event listerner for Mozilla
-	  if(window.addEventListener)
-	      this.domElement.addEventListener('DOMMouseScroll', mousescroll, false);
-	  //for IE/OPERA etc
-	  this.domElement.onmousewheel = mousescroll;
 
 		window.addEventListener( 'keydown', keydown, false );
 		window.addEventListener( 'keyup', keyup, false );

@@ -1,8 +1,9 @@
-define(['utilities/window','three'],function(window) {
+define(['utilities/window'],function(window) {
 	/**
 	 * Define namespace
 	*/
-	if(typeof THREEx === "undefined")	window.THREEx	= {};
+	if(typeof THREEx === "undefined")
+		window.THREEx = {};
 
 
 	/**
