@@ -32,6 +32,8 @@ requirejs.config {
 		'sprite-plugin'                  : 'vendor/three/sprite-plugin'
 		'shadowmap-plugin'               : 'vendor/three/shadowmap-plugin'
 		'lensflare-plugin'               : 'vendor/three/lensflare-plugin'
+		'material'                       : 'vendor/three/material'
+		'shader-material'                : 'vendor/three/shader-material'
 }
 
 require ['app']
