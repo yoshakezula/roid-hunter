@@ -6,8 +6,17 @@ require 'debugger'
 $list = {}
 
 begin
-  p 'Opening JPL NHAT list'
+  
+  #Uncomment to get all targets
+  # p 'Opening FULL JPL NHAT list'
+  # uri = "http://neo.jpl.nasa.gov/cgi-bin/nhats?dv=12&dur=360&stay=8&launch=2015-2040&H=26&occ=7&sort=n_via_traj&sdir=DESC&action=Display+Table#top"
+  # output_file_name = 'all_nhats'
+
+  #Uncomment to get top targets
+  p 'Opening top targets in JPL NHAT list'
+  output_file_name = 'targets'
   uri = "http://neo.jpl.nasa.gov/cgi-bin/nhats?dv=6;dur=360;stay=8;launch=2025-2030;H=30;occ=7;sort=H;sdir=ASC;action=Display%20Table;show_inst=0#top"
+  
   doc = Nokogiri::HTML(open(uri))
   rows = doc.css('#nhats_table tr')
   rows[1..rows.length].each do |row|
@@ -56,7 +65,7 @@ rescue Exception => e
   p e.backtrace
 end
 
-File.open('../json/targets.json', 'w') do |f|
+File.open('../json/' + output_file_name + '.json', 'w') do |f|
   f.write($list.to_json)
 end
 p 'wrote file'
