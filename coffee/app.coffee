@@ -61,24 +61,6 @@ app.get '/', (req, res) ->
 			summary: summary_result,
 		}
 
-app.get '/about', (req, res) ->
-	# about page
-	renderWithContext res, 'about'
-
-app.get '/feedback', (req, res) ->
-	# serve feedback form
-	renderWithContext res, 'feedback'
-
-app.post '/feedback', (req, res) ->
-	# process feedback form
-	email = req.body.email
-	feedback = req.body.feedback
-	mailer.mail(email + ':\r\n' + feedback)
-	res.redirect('/')
-
-app.get '/3dtest', (req, res) ->
-	renderWithContext(res, '3d')
-
 app.get '/top', (req, res) ->
 	fs.readFile 'top.json', (err, data) ->
 		res.send JSON.parse(data)
@@ -86,52 +68,6 @@ app.get '/top', (req, res) ->
 app.get '/top-targets', (req, res) ->
 	fs.readFile 'json/targets.json', (err, data) ->
 		res.send JSON.parse(data)
-
-
-app.get '/summary', (req, res) ->
-	# Homepage result summary
-	lookup.homepage (err, result) ->
-		if err
-			res.status(500)
-			res.send(result)
-		else
-			res.send(result)
-
-app.get '/count', (req, res) ->
-	# Number of 'roids in the db
-	lookup.count num, (err, result) ->
-		res.send({n: result})
-
-
-app.get '/info/:query', (req, res) ->
-	# Query info on a specific asteroid
-	lookup.query req.params.query, (err, result) ->
-		res.send {data: result}
-
-
-app.get '/search/:q', (req, res) ->
-	# Placeholder: search database for any asteroid
-	res.send('')
-
-app.get '/autocomplete', (req, res) ->
-	# Query info on a specific asteroid
-	lookup.autoComplete req.query.query, (err, result) ->
-		res.send {data: result}
-	, {
-		full_results: false,
-		limit: 8,
-	}
-
-app.get '/compositions', (req, res) ->
-	lookup.compositions (err, result) ->
-		res.send {data: result}
-
-
-app.post '/subscribe', (req, res) ->
-	# Mail me to subscribe
-	email = req.body.email
-	mailer.mail('subscribe ' + email)
-	res.redirect('/')
 
 renderWithContext = (res, template, obj) ->
 	# Add a global context to all templates
