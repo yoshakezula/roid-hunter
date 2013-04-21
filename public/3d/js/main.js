@@ -660,9 +660,7 @@ $(function() {
 
     // Get new data points
     $('#loading-text').html('asteroids database');
-    $.getJSON('/top?sort=' + sort + '&n='
-        + (using_webgl ? MAX_NUM_ORBITS : CANVAS_NUM_ORBITS)
-        + '&use3d=true&compact=true', function(data) {
+    $.getJSON('/top', function(data) {
       if (!data.results) {
         alert('Sorry, something went wrong and the server failed to return data.');
         return;
@@ -939,7 +937,7 @@ $(function() {
     var now = new Date().getTime();
     if (now - display_date_last_updated > 500 && typeof datgui !== 'undefined') {
       var georgian_date = fromJED(jed);
-      datgui['display date'] = georgian_date.getMonth()+1 + "/"
+      datgui['date'] = georgian_date.getMonth()+1 + "/"
         + georgian_date.getDate() + "/" + georgian_date.getFullYear();
       display_date_last_updated = now;
     }

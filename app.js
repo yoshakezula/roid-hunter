@@ -87,32 +87,7 @@ app.get('/3dtest', function(req, res) {
 });
 
 app.get('/top', function(req, res) {
-  // // gets top n asteroids for a given sort system
-  // var num = parseInt(req.query.n);
-  // if (isNaN(num) || typeof num !== 'number')
-  //   num = 100;
-  // //else
-  // // NOTE no minimum for many-particles simulation
-  //   //num = Math.min(num, 10000);
-  // var include_3d_vars = req.query.use3d ? true : false;
-  // var compact = req.query.compact ? true : false;
-  // lookup.topN({
-  //   n: num,
-  //   sort: req.query.sort,
-  //   include_3d_vars: include_3d_vars,
-  //   compact: compact,
-  // },
-  //   function(err, result) {
-  //   if (err) {
-  //     res.status(500);
-  //     res.send({results:result});
-  //   }
-  //   else {
-  //     res.setHeader('Cache-Control', 'max-age=864000'); // 10 days
-  //     res.send({results:result});
-  //   }
-  // });
-  fs.readFile('top_full_data.json', function(err, data) {
+  fs.readFile('top.json', function(err, data) {
     res.send(JSON.parse(data));
   });
 });
