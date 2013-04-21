@@ -958,6 +958,7 @@
       } else {
         $('#asteroid-detail-wrapper').addClass('asteroid-detail-active');
       }
+      setLock('(' + clickedAsteroid + ')');
 
       setTimeout(function() {
         $('#asteroid-detail-wrapper').removeClass('asteroid-detail-bounce');
