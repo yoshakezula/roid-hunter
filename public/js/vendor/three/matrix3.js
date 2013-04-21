@@ -5,7 +5,7 @@ define(['utilities/window','three'],function(window) {
 	 * @author bhouston / http://exocortex.com
 	 */
 
-	THREE.Matrix3 = function ( n11, n12, n13, n21, n22, n23, n31, n32, n33 ) {
+	window.THREE.Matrix3 = function ( n11, n12, n13, n21, n22, n23, n31, n32, n33 ) {
 
 		this.elements = new Float32Array(9);
 
@@ -18,7 +18,7 @@ define(['utilities/window','three'],function(window) {
 		);
 	};
 
-	THREE.Matrix3.prototype = {
+	window.THREE.Matrix3.prototype = {
 
 		constructor: THREE.Matrix3,
 

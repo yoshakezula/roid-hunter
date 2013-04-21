@@ -1,243 +1,237 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- * @author Larry Battle / http://bateru.com/news
- */
+define(['utilities/window'],function(window) {
+	/**
+	 * @author mrdoob / http://mrdoob.com/
+	 * @author Larry Battle / http://bateru.com/news
+	 */
 
-var THREE = THREE || { REVISION: '58' };
+	window.THREE = { REVISION: '58' };
 
-self.console = self.console || {
+	window.self.console = self.console || {
 
-	info: function () {},
-	log: function () {},
-	debug: function () {},
-	warn: function () {},
-	error: function () {}
+		info: function () {},
+		log: function () {},
+		debug: function () {},
+		warn: function () {},
+		error: function () {}
 
-};
+	};
 
-self.Int32Array = self.Int32Array || Array;
-self.Float32Array = self.Float32Array || Array;
+	window.self.Int32Array = self.Int32Array || Array;
+	window.self.Float32Array = self.Float32Array || Array;
 
-String.prototype.trim = String.prototype.trim || function () {
+	window.String.prototype.trim = String.prototype.trim || function () {
 
-	return this.replace( /^\s+|\s+$/g, '' );
+		return this.replace( /^\s+|\s+$/g, '' );
 
-};
+	};
 
-// based on https://github.com/documentcloud/underscore/blob/bf657be243a075b5e72acc8a83e6f12a564d8f55/underscore.js#L767
-THREE.extend = function ( obj, source ) {
+	// based on https://github.com/documentcloud/underscore/blob/bf657be243a075b5e72acc8a83e6f12a564d8f55/underscore.js#L767
+	window.THREE.extend = function ( obj, source ) {
 
-	// ECMAScript5 compatibility based on: http://www.nczonline.net/blog/2012/12/11/are-your-mixins-ecmascript-5-compatible/
-	if ( Object.keys ) {
+		// ECMAScript5 compatibility based on: http://www.nczonline.net/blog/2012/12/11/are-your-mixins-ecmascript-5-compatible/
+		if ( Object.keys ) {
 
-		var keys = Object.keys( source );
+			var keys = Object.keys( source );
 
-		for (var i = 0, il = keys.length; i < il; i++) {
+			for (var i = 0, il = keys.length; i < il; i++) {
 
-			var prop = keys[i];
-			Object.defineProperty( obj, prop, Object.getOwnPropertyDescriptor( source, prop ) );
+				var prop = keys[i];
+				Object.defineProperty( obj, prop, Object.getOwnPropertyDescriptor( source, prop ) );
 
-		}
+			}
 
-	} else {
+		} else {
 
-		var safeHasOwnProperty = {}.hasOwnProperty;
+			var safeHasOwnProperty = {}.hasOwnProperty;
 
-		for ( var prop in source ) {
+			for ( var prop in source ) {
 
-			if ( safeHasOwnProperty.call( source, prop ) ) {
+				if ( safeHasOwnProperty.call( source, prop ) ) {
 
-				obj[prop] = source[prop];
+					obj[prop] = source[prop];
+
+				}
 
 			}
 
 		}
 
-	}
+		return obj;
 
-	return obj;
+	};
 
-};
+	// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+	// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 
-// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+	// requestAnimationFrame polyfill by Erik Möller
+	// fixes from Paul Irish and Tino Zijdel
 
-// requestAnimationFrame polyfill by Erik Möller
-// fixes from Paul Irish and Tino Zijdel
+	( function () {
 
-( function () {
+		var lastTime = 0;
+		var vendors = [ 'ms', 'moz', 'webkit', 'o' ];
 
-	var lastTime = 0;
-	var vendors = [ 'ms', 'moz', 'webkit', 'o' ];
+		for ( var x = 0; x < vendors.length && !window.requestAnimationFrame; ++ x ) {
 
-	for ( var x = 0; x < vendors.length && !window.requestAnimationFrame; ++ x ) {
+			window.requestAnimationFrame = window[ vendors[ x ] + 'RequestAnimationFrame' ];
+			window.cancelAnimationFrame = window[ vendors[ x ] + 'CancelAnimationFrame' ] || window[ vendors[ x ] + 'CancelRequestAnimationFrame' ];
 
-		window.requestAnimationFrame = window[ vendors[ x ] + 'RequestAnimationFrame' ];
-		window.cancelAnimationFrame = window[ vendors[ x ] + 'CancelAnimationFrame' ] || window[ vendors[ x ] + 'CancelRequestAnimationFrame' ];
+		}
 
-	}
+		if ( window.requestAnimationFrame === undefined ) {
 
-	if ( window.requestAnimationFrame === undefined ) {
+			window.requestAnimationFrame = function ( callback ) {
 
-		window.requestAnimationFrame = function ( callback ) {
+				var currTime = Date.now(), timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) );
+				var id = window.setTimeout( function() { callback( currTime + timeToCall ); }, timeToCall );
+				lastTime = currTime + timeToCall;
+				return id;
 
-			var currTime = Date.now(), timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) );
-			var id = window.setTimeout( function() { callback( currTime + timeToCall ); }, timeToCall );
-			lastTime = currTime + timeToCall;
-			return id;
+			};
 
-		};
+		}
 
-	}
+		window.cancelAnimationFrame = window.cancelAnimationFrame || function ( id ) { window.clearTimeout( id ) };
 
-	window.cancelAnimationFrame = window.cancelAnimationFrame || function ( id ) { window.clearTimeout( id ) };
+	}() );
 
-}() );
+	// GL STATE CONSTANTS
 
-// GL STATE CONSTANTS
+	window.THREE.CullFaceNone = 0;
+	window.THREE.CullFaceBack = 1;
+	window.THREE.CullFaceFront = 2;
+	window.THREE.CullFaceFrontBack = 3;
 
-THREE.CullFaceNone = 0;
-THREE.CullFaceBack = 1;
-THREE.CullFaceFront = 2;
-THREE.CullFaceFrontBack = 3;
+	window.THREE.FrontFaceDirectionCW = 0;
+	window.THREE.FrontFaceDirectionCCW = 1;
 
-THREE.FrontFaceDirectionCW = 0;
-THREE.FrontFaceDirectionCCW = 1;
+	// SHADOWING TYPES
 
-// SHADOWING TYPES
+	window.THREE.BasicShadowMap = 0;
+	window.THREE.PCFShadowMap = 1;
+	window.THREE.PCFSoftShadowMap = 2;
 
-THREE.BasicShadowMap = 0;
-THREE.PCFShadowMap = 1;
-THREE.PCFSoftShadowMap = 2;
+	// MATERIAL CONSTANTS
 
-// MATERIAL CONSTANTS
+	// side
 
-// side
+	window.THREE.FrontSide = 0;
+	window.THREE.BackSide = 1;
+	window.THREE.DoubleSide = 2;
 
-THREE.FrontSide = 0;
-THREE.BackSide = 1;
-THREE.DoubleSide = 2;
+	// shading
 
-// shading
+	window.THREE.NoShading = 0;
+	window.THREE.FlatShading = 1;
+	window.THREE.SmoothShading = 2;
 
-THREE.NoShading = 0;
-THREE.FlatShading = 1;
-THREE.SmoothShading = 2;
+	// colors
 
-// colors
+	window.THREE.NoColors = 0;
+	window.THREE.FaceColors = 1;
+	window.THREE.VertexColors = 2;
 
-THREE.NoColors = 0;
-THREE.FaceColors = 1;
-THREE.VertexColors = 2;
+	// blending modes
 
-// blending modes
+	window.THREE.NoBlending = 0;
+	window.THREE.NormalBlending = 1;
+	window.THREE.AdditiveBlending = 2;
+	window.THREE.SubtractiveBlending = 3;
+	window.THREE.MultiplyBlending = 4;
+	window.THREE.CustomBlending = 5;
 
-THREE.NoBlending = 0;
-THREE.NormalBlending = 1;
-THREE.AdditiveBlending = 2;
-THREE.SubtractiveBlending = 3;
-THREE.MultiplyBlending = 4;
-THREE.CustomBlending = 5;
+	// custom blending equations
+	// (numbers start from 100 not to clash with other
+	//  mappings to OpenGL constants defined in Texture.js)
 
-// custom blending equations
-// (numbers start from 100 not to clash with other
-//  mappings to OpenGL constants defined in Texture.js)
+	window.THREE.AddEquation = 100;
+	window.THREE.SubtractEquation = 101;
+	window.THREE.ReverseSubtractEquation = 102;
 
-THREE.AddEquation = 100;
-THREE.SubtractEquation = 101;
-THREE.ReverseSubtractEquation = 102;
+	// custom blending destination factors
 
-// custom blending destination factors
+	window.THREE.ZeroFactor = 200;
+	window.THREE.OneFactor = 201;
+	window.THREE.SrcColorFactor = 202;
+	window.THREE.OneMinusSrcColorFactor = 203;
+	window.THREE.SrcAlphaFactor = 204;
+	window.THREE.OneMinusSrcAlphaFactor = 205;
+	window.THREE.DstAlphaFactor = 206;
+	window.THREE.OneMinusDstAlphaFactor = 207;
 
-THREE.ZeroFactor = 200;
-THREE.OneFactor = 201;
-THREE.SrcColorFactor = 202;
-THREE.OneMinusSrcColorFactor = 203;
-THREE.SrcAlphaFactor = 204;
-THREE.OneMinusSrcAlphaFactor = 205;
-THREE.DstAlphaFactor = 206;
-THREE.OneMinusDstAlphaFactor = 207;
+	// custom blending source factors
 
-// custom blending source factors
-
-//THREE.ZeroFactor = 200;
-//THREE.OneFactor = 201;
-//THREE.SrcAlphaFactor = 204;
-//THREE.OneMinusSrcAlphaFactor = 205;
-//THREE.DstAlphaFactor = 206;
-//THREE.OneMinusDstAlphaFactor = 207;
-THREE.DstColorFactor = 208;
-THREE.OneMinusDstColorFactor = 209;
-THREE.SrcAlphaSaturateFactor = 210;
+	//THREE.ZeroFactor = 200;
+	//THREE.OneFactor = 201;
+	//THREE.SrcAlphaFactor = 204;
+	//THREE.OneMinusSrcAlphaFactor = 205;
+	//THREE.DstAlphaFactor = 206;
+	//THREE.OneMinusDstAlphaFactor = 207;
+	window.THREE.DstColorFactor = 208;
+	window.THREE.OneMinusDstColorFactor = 209;
+	window.THREE.SrcAlphaSaturateFactor = 210;
 
 
-// TEXTURE CONSTANTS
+	// TEXTURE CONSTANTS
 
-THREE.MultiplyOperation = 0;
-THREE.MixOperation = 1;
-THREE.AddOperation = 2;
+	window.THREE.MultiplyOperation = 0;
+	window.THREE.MixOperation = 1;
+	window.THREE.AddOperation = 2;
 
-// Mapping modes
+	// Mapping modes
 
-THREE.UVMapping = function () {};
+	window.THREE.UVMapping = function () {};
 
-THREE.CubeReflectionMapping = function () {};
-THREE.CubeRefractionMapping = function () {};
+	window.THREE.CubeReflectionMapping = function () {};
+	window.THREE.CubeRefractionMapping = function () {};
 
-THREE.SphericalReflectionMapping = function () {};
-THREE.SphericalRefractionMapping = function () {};
+	window.THREE.SphericalReflectionMapping = function () {};
+	window.THREE.SphericalRefractionMapping = function () {};
 
-// Wrapping modes
+	// Wrapping modes
 
-THREE.RepeatWrapping = 1000;
-THREE.ClampToEdgeWrapping = 1001;
-THREE.MirroredRepeatWrapping = 1002;
+	window.THREE.RepeatWrapping = 1000;
+	window.THREE.ClampToEdgeWrapping = 1001;
+	window.THREE.MirroredRepeatWrapping = 1002;
 
-// Filters
+	// Filters
 
-THREE.NearestFilter = 1003;
-THREE.NearestMipMapNearestFilter = 1004;
-THREE.NearestMipMapLinearFilter = 1005;
-THREE.LinearFilter = 1006;
-THREE.LinearMipMapNearestFilter = 1007;
-THREE.LinearMipMapLinearFilter = 1008;
+	window.THREE.NearestFilter = 1003;
+	window.THREE.NearestMipMapNearestFilter = 1004;
+	window.THREE.NearestMipMapLinearFilter = 1005;
+	window.THREE.LinearFilter = 1006;
+	window.THREE.LinearMipMapNearestFilter = 1007;
+	window.THREE.LinearMipMapLinearFilter = 1008;
 
-// Data types
+	// Data types
 
-THREE.UnsignedByteType = 1009;
-THREE.ByteType = 1010;
-THREE.ShortType = 1011;
-THREE.UnsignedShortType = 1012;
-THREE.IntType = 1013;
-THREE.UnsignedIntType = 1014;
-THREE.FloatType = 1015;
+	window.THREE.UnsignedByteType = 1009;
+	window.THREE.ByteType = 1010;
+	window.THREE.ShortType = 1011;
+	window.THREE.UnsignedShortType = 1012;
+	window.THREE.IntType = 1013;
+	window.THREE.UnsignedIntType = 1014;
+	window.THREE.FloatType = 1015;
 
-// Pixel types
+	// Pixel types
 
-//THREE.UnsignedByteType = 1009;
-THREE.UnsignedShort4444Type = 1016;
-THREE.UnsignedShort5551Type = 1017;
-THREE.UnsignedShort565Type = 1018;
+	//THREE.UnsignedByteType = 1009;
+	window.THREE.UnsignedShort4444Type = 1016;
+	window.THREE.UnsignedShort5551Type = 1017;
+	window.THREE.UnsignedShort565Type = 1018;
 
-// Pixel formats
+	// Pixel formats
 
-THREE.AlphaFormat = 1019;
-THREE.RGBFormat = 1020;
-THREE.RGBAFormat = 1021;
-THREE.LuminanceFormat = 1022;
-THREE.LuminanceAlphaFormat = 1023;
+	window.THREE.AlphaFormat = 1019;
+	window.THREE.RGBFormat = 1020;
+	window.THREE.RGBAFormat = 1021;
+	window.THREE.LuminanceFormat = 1022;
+	window.THREE.LuminanceAlphaFormat = 1023;
 
-// Compressed texture formats
+	// Compressed texture formats
 
-THREE.RGB_S3TC_DXT1_Format = 2001;
-THREE.RGBA_S3TC_DXT1_Format = 2002;
-THREE.RGBA_S3TC_DXT3_Format = 2003;
-THREE.RGBA_S3TC_DXT5_Format = 2004;
-
-/*
-// Potential future PVRTC compressed texture formats
-THREE.RGB_PVRTC_4BPPV1_Format = 2100;
-THREE.RGB_PVRTC_2BPPV1_Format = 2101;
-THREE.RGBA_PVRTC_4BPPV1_Format = 2102;
-THREE.RGBA_PVRTC_2BPPV1_Format = 2103;
-*/
+	window.THREE.RGB_S3TC_DXT1_Format = 2001;
+	window.THREE.RGBA_S3TC_DXT1_Format = 2002;
+	window.THREE.RGBA_S3TC_DXT3_Format = 2003;
+	window.THREE.RGBA_S3TC_DXT5_Format = 2004;
+});

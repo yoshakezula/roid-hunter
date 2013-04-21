@@ -5,7 +5,7 @@ define(['utilities/window','three','vector4','box3','matrix3','frustum'],functio
 	 * @author julianwa / https://github.com/julianwa
 	 */
 
-	THREE.Projector = function () {
+	window.THREE.Projector = function () {
 
 		var _object, _objectCount, _objectPool = [], _objectPoolLength = 0,
 		_vertex, _vertexCount, _vertexPool = [], _vertexPoolLength = 0,

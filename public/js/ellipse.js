@@ -1,14 +1,7 @@
-(function() {
+define(['utilities/window','line-dashed-material','line','globals'], function(window) {
   "use strict";
 
-  var pi = Math.PI;
-  var PIXELS_PER_AU = 50;
-  var USE_REAL_ELLIPSE = true;
-
-  var attributes
-  var uniforms;
-
-  var Orbit3D = function(eph, opts, bigParticle) {
+  window.Orbit3D = function(eph, opts, bigParticle) {
     opts = opts || {};
     opts.color = opts.color || 0xffee00;
     opts.width = opts.width || 1;
@@ -18,14 +11,13 @@
 
     this.opts = opts;
     this.name = opts.name;
-    this.eph = eph;
     this.particle_geometry = opts.particle_geometry;
     this.bigParticle = bigParticle;
 
     this.CreateParticle(opts.jed, opts.texture_path);
   }
 
-  Orbit3D.prototype.CreateOrbit = function(jed) {
+  window.Orbit3D.prototype.CreateOrbit = function(jed) {
     var pts;
     var points;
     var time = jed;
@@ -45,17 +37,17 @@
     points.vertices = pts;
     points.computeLineDistances(); // required for dotted lines
 
-    var line = new THREE.Line(points,
-      new THREE.LineDashedMaterial({
+    var dashed = new THREE.LineDashedMaterial({
         color: this.opts.color,
         linewidth: this.opts.width,
         dashSize: 1,
         gapSize: 0.5
-      }), THREE.LineStrip);
+      })
+    var line = new THREE.Line(points, dashed, THREE.LineStrip);
     return line;
   }
 
-  Orbit3D.prototype.CreateParticle = function(jed, texture_path) {
+  window.Orbit3D.prototype.CreateParticle = function(jed, texture_path) {
     if (!this.bigParticle && this.particle_geometry) {
       // dummy position for particle geometry
       var tmp_vec = new THREE.Vector3(0,0,0);
@@ -86,12 +78,12 @@
     }
   }
 
-  Orbit3D.prototype.MoveParticle = function(time_jed) {
+  window.Orbit3D.prototype.MoveParticle = function(time_jed) {
     var pos = this.getPosAtTime(time_jed);
     this.MoveParticleToPosition(pos);
   }
 
-  Orbit3D.prototype.MoveParticleToPosition = function(pos) {
+  window.Orbit3D.prototype.MoveParticleToPosition = function(pos) {
     if (this.bigParticle) {
       this.particle.position.set(pos[0], pos[1], pos[2]);
     }
@@ -103,7 +95,7 @@
     }
   }
 
-  Orbit3D.prototype.getPosAtTime = function(jed) {
+  window.Orbit3D.prototype.getPosAtTime = function(jed) {
     // Note: this must match the vertex shader.
     // This position calculation is used to follow asteroids in 'lock-on' mode
     var e = this.eph.e;
@@ -151,15 +143,13 @@
     return ret;
   }
 
-  Orbit3D.prototype.getEllipse = function() {
+  window.Orbit3D.prototype.getEllipse = function() {
     if (!this.ellipse)
       this.ellipse = this.CreateOrbit(this.opts.jed);
     return this.ellipse;
   }
 
-  Orbit3D.prototype.getParticle = function() {
+  window.Orbit3D.prototype.getParticle = function() {
     return this.particle;
   }
-
-  window.Orbit3D = Orbit3D;
-})();
+});

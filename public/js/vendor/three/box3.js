@@ -3,14 +3,14 @@ define(['utilities/window','three','vector3'],function(window) {
 	 * @author bhouston / http://exocortex.com
 	 */
 
-	THREE.Box3 = function ( min, max ) {
+	window.THREE.Box3 = function ( min, max ) {
 
 		this.min = ( min !== undefined ) ? min : new THREE.Vector3( Infinity, Infinity, Infinity );
 		this.max = ( max !== undefined ) ? max : new THREE.Vector3( -Infinity, -Infinity, -Infinity );
 
 	};
 
-	THREE.Box3.prototype = {
+	window.THREE.Box3.prototype = {
 
 		constructor: THREE.Box3,
 

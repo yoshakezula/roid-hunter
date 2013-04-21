@@ -1,4 +1,4 @@
-define(['utilities/window','util'],function(window) {
+
   self.addEventListener('message', function(e) {
     var data = e.data;
     switch (data.command) {
@@ -40,12 +40,12 @@ define(['utilities/window','util'],function(window) {
     }
   }, false);
 
-  window.setJED = function(new_jed) {
+  setJED = function(new_jed) {
     jed = new_jed;
     jed_threshold = new_jed + 365.25;
   }
 
-  window.runSimulation = function(data) {
+  runSimulation = function(data) {
     var l = data.particle_ephemeris.length;
     var particle_ephemeris = data.particle_ephemeris;
     (function step() {
@@ -66,21 +66,21 @@ define(['utilities/window','util'],function(window) {
     })();
   }
 
-  window.log = function(s) {
+  log = function(s) {
     self.postMessage({
       type: 'debug',
       value: s
     });
   }
 
-  window.sendResult = function(val) {
+  sendResult = function(val) {
     self.postMessage({
       type: 'result',
       value: val
     });
   }
 
-  window.getPosAtTime = function(eph, jed) {
+  getPosAtTime = function(eph, jed) {
     var e = eph.e;
     var a = eph.a;
     var i = (eph.i-Ephemeris.earth.i) * pi/180;
@@ -126,7 +126,7 @@ define(['utilities/window','util'],function(window) {
     return ret;
   }
 
-  window.getEphemeris = function() {
+  getEphemeris = function() {
     return {
       mercury: {
         full_name: 'Mercury',
@@ -192,5 +192,4 @@ define(['utilities/window','util'],function(window) {
     };
   }
 
-  window.Ephemeris = getEphemeris();
-});
+  Ephemeris = getEphemeris();

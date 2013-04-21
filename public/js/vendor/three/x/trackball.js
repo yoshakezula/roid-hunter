@@ -1,4 +1,4 @@
-define(['utilities/window','gl-capability','three'],function(window) {
+define(['utilities/window','gl-capability','three','event-target'],function(window) {
 	/**
 	 * @author Eberhard Graether / http://egraether.com/
 	 * some changes, eg. scroll support by Ian Webster ianww.com

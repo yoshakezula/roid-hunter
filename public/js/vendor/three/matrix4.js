@@ -1,4 +1,4 @@
-define(['utilities/window','three'],function(window) {
+define(['utilities/window','math'],function(window) {
 	/**
 	 * @author mrdoob / http://mrdoob.com/
 	 * @author supereggbert / http://www.paulbrunt.co.uk/
@@ -922,7 +922,7 @@ define(['utilities/window','three'],function(window) {
 
 	};
 
-	THREE.extend( THREE.Matrix4.prototype, {
+	window.THREE.extend( THREE.Matrix4.prototype, {
 
 		decompose: function() {
 

@@ -1,11 +1,11 @@
-define(['utilities/window','three','event-dispatcher'],function(window) {
+define(['utilities/window','event-dispatcher'],function(window) {
 	/**
 	 * @author mrdoob / http://mrdoob.com/
 	 * @author alteredq / http://alteredqualia.com/
 	 * @author szimek / https://github.com/szimek/
 	 */
 
-	THREE.Texture = function ( image, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy ) {
+	window.THREE.Texture = function ( image, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy ) {
 
 		this.id = THREE.TextureIdCount ++;
 
@@ -40,7 +40,7 @@ define(['utilities/window','three','event-dispatcher'],function(window) {
 
 	};
 
-	THREE.Texture.prototype = {
+	window.THREE.Texture.prototype = {
 
 		constructor: THREE.Texture,
 
@@ -89,5 +89,5 @@ define(['utilities/window','three','event-dispatcher'],function(window) {
 
 	};
 
-	THREE.TextureIdCount = 0;
+	window.THREE.TextureIdCount = 0;
 });

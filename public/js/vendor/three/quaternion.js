@@ -6,7 +6,7 @@ define(['utilities/window','three'],function(window) {
 	 * @author bhouston / http://exocortex.com
 	 */
 
-	THREE.Quaternion = function( x, y, z, w ) {
+	window.THREE.Quaternion = function( x, y, z, w ) {
 
 		this.x = x || 0;
 		this.y = y || 0;
@@ -15,7 +15,7 @@ define(['utilities/window','three'],function(window) {
 
 	};
 
-	THREE.Quaternion.prototype = {
+	window.THREE.Quaternion.prototype = {
 
 		constructor: THREE.Quaternion,
 
@@ -359,7 +359,7 @@ define(['utilities/window','three'],function(window) {
 
 	};
 
-	THREE.Quaternion.slerp = function ( qa, qb, qm, t ) {
+	window.THREE.Quaternion.slerp = function ( qa, qb, qm, t ) {
 
 		return qm.copy( qa ).slerp( qb, t );
 

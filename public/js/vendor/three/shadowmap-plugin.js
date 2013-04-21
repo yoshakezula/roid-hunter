@@ -1,4 +1,4 @@
-define(['utilities/window','three','vector3','webglshaders','shader-material'],function(window) {
+define(['utilities/window','three','vector3','shader-lib','shader-material','projector'],function(window) {
 	/**
 	 * @author alteredq / http://alteredqualia.com/
 	 */

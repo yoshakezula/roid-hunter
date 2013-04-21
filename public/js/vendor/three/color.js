@@ -1,4 +1,4 @@
-define(['utilities/window','three','vector3'],function(window) {
+define(['utilities/window','three'],function(window) {
 	/**
 	 * @author mrdoob / http://mrdoob.com/
 	 */
