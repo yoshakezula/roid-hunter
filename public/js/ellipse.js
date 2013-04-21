@@ -7,7 +7,7 @@ define(['utilities/window','line-dashed-material','line','globals'], function(wi
     opts.width = opts.width || 1;
     opts.object_size = opts.object_size || 1;
     opts.jed =  opts.jed || 2451545.0;
-
+    this.eph = eph;
 
     this.opts = opts;
     this.name = opts.name;

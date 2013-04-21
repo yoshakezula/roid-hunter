@@ -27,6 +27,7 @@ define [
 	'geometry'
 	'quaternion'
 	'webglrenderer'
+	'shader-utils'
 	'trackball'
 	'perspective-camera'
 	'image-utils'
