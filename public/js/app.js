@@ -136,7 +136,7 @@
             populateTargetsTable();
           });
 
-                
+
 
           gui.add(text, 'display date').onChange(function(val) {
             var newdate = Date.parse(val);
@@ -363,7 +363,7 @@
 
         // camera.fov = 100;
         // camera.updateProjectionMatrix();
-        
+
         //initiate variables
         var firstValidFrame = null
         var cameraRadius = 290;
@@ -374,15 +374,15 @@
 
 
         function map(value, inputMin, inputMax, outputMin, outputMax) {
-          var outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);  
+          var outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);
           if(outVal >  outputMax){
             outVal = outputMax;
           }
           if(outVal <  outputMin){
             outVal = outputMin;
-          } 
+          }
           return outVal;
-        } 
+        }
 
         var controllerOptions = {enableGestures: true
         };
@@ -399,13 +399,13 @@
             rotateY = -t[1]//-curY
             // console.log(rotateX, rotateY);
 
-            
+
 
             zoom = Math.max(0, t[2]);
             //lower the denom of zoom, higher the zoom degree
             zoomFactor = 1/(1 + (zoom / 150));
             // console.log(t[2], zoomFactor);
-            
+
             // //adjust 3D spherical coordinates of the camera
             camera.position.x = zoomFactor * (cameraRadius * Math.sin(rotateY * .01) * Math.cos(rotateX * .01));
             camera.position.z = zoomFactor * (cameraRadius * Math.sin(rotateY * .01) * Math.sin(rotateX * .01));
