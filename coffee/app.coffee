@@ -67,6 +67,10 @@ app.get '/top', (req, res) ->
 	fs.readFile 'top.json', (err, data) ->
 		res.send JSON.parse(data)
 
+app.get '/top-targets', (req, res) ->
+	fs.readFile 'json/targets.json', (err, data) ->
+		res.send JSON.parse(data)
+
 
 app.get '/summary', (req, res) ->
 	# Homepage result summary
