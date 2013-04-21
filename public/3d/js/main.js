@@ -158,7 +158,7 @@ $(function() {
         }
       });
       $('#asteroid-detail-close').click(function() {
-        $('#asteroid-detail-close').removeClass('asteroid-detail-active')
+        $('#asteroid-detail-wrapper').removeClass('asteroid-detail-active')
       });
 
       gui.add(text, 'display date').onChange(function(val) {
