@@ -59,8 +59,8 @@
       P: 365.256
     },
 
-    mars_mission:{
-      full_name: 'Mars Mission',
+    death_star:{
+      full_name: 'Death Star',
       ma: 19.39019754,
       epoch: 2451545.0,
       a: 1.52371034,
