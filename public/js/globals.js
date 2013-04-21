@@ -61,16 +61,17 @@
 
     death_star:{
       full_name: 'Death Star',
-      ma: 19.39019754,
+      ma: -2.47311027,
       epoch: 2451545.0,
-      a: 1.52371034,
-      e: 0.09339410,
-      i: 1.84969142,
-      w_bar: -23.94362959,   // longitude of perihelion
-      w: -73.5031685,   // argument of perihelion
-      L: -4.55343205,    // mean longitude
-      om: 49.55953891,    // longitude of ascending node
-      P: 686.980
+      a: 1.10000261,
+      e: 0.01671123,
+      i: 0.00001531,
+      w_bar: 102.93768193,
+      w: 102.93768193,
+      L: 100.46457166,
+      //om:-11.26064,
+      om: 0,
+      P: 365.256
     },
 
     // http://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html

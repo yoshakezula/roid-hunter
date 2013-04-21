@@ -304,11 +304,11 @@
 
     var death_star = new Orbit3D(Ephemeris.death_star,
         {
-          color: 0xA63A3A, width: 1, jed: jed, object_size: 1.7,
+          color: 0xcccccc, width: 1, jed: jed, object_size: 1.7,
           texture_path: '/img/texture-death-star.jpg',
-          display_color: new THREE.Color(0xA63A3A),
+          display_color: new THREE.Color(0xcccccc),
           particle_geometry: particle_system_geometry,
-          name: 'That\'s no moon!'
+          name: 'Thats no moon!'
         }, !using_webgl);
     scene.add(death_star.getEllipse());
     if (!using_webgl)
