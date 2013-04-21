@@ -308,7 +308,7 @@ $(function() {
       scene.add(venus.getParticle());
     var earth = new Orbit3D(Ephemeris.earth,
         {
-          color: 0x009ACD, width: 1, jed: jed, object_size: 1.7,
+          color: 0x009ACD, width: 1, jed: jed, object_size: 20,
           texture_path: '/images/texture-earth.jpg',
           display_color: new THREE.Color(0x009ACD),
           particle_geometry: particle_system_geometry,

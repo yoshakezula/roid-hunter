@@ -1,7 +1,7 @@
 define(['utilities/window','line-dashed-material','line','globals'], function(window) {
   "use strict";
 
-  window.Orbit3D = function(eph, opts, bigParticle) {
+  var Orbit3D = function(eph, opts, bigParticle) {
     opts = opts || {};
     opts.color = opts.color || 0xffee00;
     opts.width = opts.width || 1;
@@ -17,7 +17,7 @@ define(['utilities/window','line-dashed-material','line','globals'], function(wi
     this.CreateParticle(opts.jed, opts.texture_path);
   }
 
-  window.Orbit3D.prototype.CreateOrbit = function(jed) {
+  Orbit3D.prototype.CreateOrbit = function(jed) {
     var pts;
     var points;
     var time = jed;
@@ -47,7 +47,7 @@ define(['utilities/window','line-dashed-material','line','globals'], function(wi
     return line;
   }
 
-  window.Orbit3D.prototype.CreateParticle = function(jed, texture_path) {
+  Orbit3D.prototype.CreateParticle = function(jed, texture_path) {
     if (!this.bigParticle && this.particle_geometry) {
       // dummy position for particle geometry
       var tmp_vec = new THREE.Vector3(0,0,0);
@@ -78,12 +78,12 @@ define(['utilities/window','line-dashed-material','line','globals'], function(wi
     }
   }
 
-  window.Orbit3D.prototype.MoveParticle = function(time_jed) {
+  Orbit3D.prototype.MoveParticle = function(time_jed) {
     var pos = this.getPosAtTime(time_jed);
     this.MoveParticleToPosition(pos);
   }
 
-  window.Orbit3D.prototype.MoveParticleToPosition = function(pos) {
+  Orbit3D.prototype.MoveParticleToPosition = function(pos) {
     if (this.bigParticle) {
       this.particle.position.set(pos[0], pos[1], pos[2]);
     }
@@ -95,7 +95,7 @@ define(['utilities/window','line-dashed-material','line','globals'], function(wi
     }
   }
 
-  window.Orbit3D.prototype.getPosAtTime = function(jed) {
+  Orbit3D.prototype.getPosAtTime = function(jed) {
     // Note: this must match the vertex shader.
     // This position calculation is used to follow asteroids in 'lock-on' mode
     var e = this.eph.e;
@@ -143,13 +143,15 @@ define(['utilities/window','line-dashed-material','line','globals'], function(wi
     return ret;
   }
 
-  window.Orbit3D.prototype.getEllipse = function() {
+  Orbit3D.prototype.getEllipse = function() {
     if (!this.ellipse)
       this.ellipse = this.CreateOrbit(this.opts.jed);
     return this.ellipse;
   }
 
-  window.Orbit3D.prototype.getParticle = function() {
+  Orbit3D.prototype.getParticle = function() {
     return this.particle;
   }
+
+  window.Orbit3D = Orbit3D;
 });
