@@ -18,7 +18,6 @@ define [
 	'detector'
 	'three'
 	'domevent'
-	'dragpan-controls'
 	'window-resize'
 	'vector3'
 	'full-screen'
