@@ -8,20 +8,29 @@
 
 
 define [
-	'utilties/window'
+	'utilities/window'
+	'globals'
 	'worker'
 	'ephemeris'
 	'util'
 	'jquery'
+	'detector'
 	'three'
-	'dragpan'
+	'domevent'
+	'dragpan-controls'
+	'window-resize'
+	'vector3'
+	'full-screen'
+	'quaternion'
+	'trackball'
 	], (window) ->
-		'use strict'
 
-	polling = (callback) ->
+	'use strict'
+
+	window.polling = (callback) ->
 		window.setTimeout(callback, 1000 / 60)
 
-	frame = () ->
+	window.frame = () ->
 		window.requestAnimationFrame       ||
 		window.webkitRequestAnimationFrame ||
 		window.mozRequestAnimationFrame    ||
@@ -29,75 +38,7 @@ define [
 		window.msRequestAnimationFrame     ||
 		polling
 
-	window.requestAnimFrame = (frame)()
-
-	WEB_GL_ENABLED = true
-
-	MAX_NUM_ORBITS = 4000
-	CANVAS_NUM_ORBITS = 30  # gimped version orbits
-	PIXELS_PER_AU = 50
-	NUM_BIG_PARTICLES = 30   # show this many asteroids with orbits
-
-	stats = false
-	scene = false
-	renderer = false
-	composer = false
-	camera = false
-	cameraControls = false
-	pi = Math.PI
-	using_webgl = false
-	camera_fly_around = true
-	object_movement_on = true
-	lastHovered
-	added_objects = []
-	planets = []
-	planet_orbits_visible = true
-	jed = toJED(new Date())
-	particle_system_geometry = null
-	asteroids_loaded = false
-	display_date_last_updated = 0
-
-	# Lock/feature stuff
-	feature_map = {}       # map from object full name to Orbit3D instance
-	locked_object = null
-	locked_object_ellipse = null
-	locked_object_idx = -1
-	locked_object_size = -1
-	locked_object_color = -1
-
-	# 2012 da14
-	featured_2012_da14 = getParameterByName('2012_DA14') == '1'
-
-	# workers stuff
-	works = []
-	workers = []
-	NUM_WORKERS = 3
-	worker_path = '/3d/js/position_worker.js'
-	workers_initialized = false
-	particleSystem = false
-
-	# glsl stuff
-	attributes = false
-	uniforms = false
-
-	init()
-	initGUI()
-
-	$('#btn-toggle-movement').on('click', () ->
-		object_movement_on = !object_movement_on
-	)
-	$('#controls .js-sort').on('click', () ->
-		runAsteroidQuery($(this).data('sort'))
-		$('#controls .js-sort').css('font-weight', 'normal')
-		$(this).css('font-weight', 'bold')
-	)
-
-	# 2012 Da14 feature
-	if (featured_2012_da14)
-		jed = toJED(new Date('2012-11-01'))
-		mixpanel.track('2012_da14 special')
-
-	initGUI = () ->
+	window.initGUI = () ->
 		ViewUI = () ->
 			this['Cost effective'] = () ->
 				runAsteroidQuery('score')
@@ -108,7 +49,6 @@ define [
 			this.movement = object_movement_on
 			this['planet orbits'] = planet_orbits_visible
 			this['display date'] = '12/26/2012'
-
 		window.onload = () ->
 			text = new ViewUI()
 			gui = new dat.GUI()
@@ -132,7 +72,7 @@ define [
 			).listen()
 			window.datgui = text
 
-	togglePlanetOrbits = () ->
+	window.togglePlanetOrbits = () ->
 		if (planet_orbits_visible)
 			for i of planets
 				scene.remove(planets[i].getEllipse())
@@ -141,8 +81,7 @@ define [
 				scene.add(planets[i].getEllipse())
 		planet_orbits_visible = !planet_orbits_visible
 
-	# init the scene
-	init = () ->
+	window.init = () ->
 		$('#loading-text').html('renderer')
 		if (WEB_GL_ENABLED && Detector.webgl)
 			renderer = new THREE.WebGLRenderer({
@@ -193,9 +132,7 @@ define [
 		cameraControls.panSpeed = 2
 		cameraControls.zoomSpeed = 3
 		cameraControls.maxDistance = 1100
-
 		# Rendering stuff
-
 		# "sun" - 0,0 marker
 		if (using_webgl)
 			$('#loading-text').html('sun')
@@ -327,7 +264,7 @@ define [
 
 		window.renderer = renderer
 
-	setNeutralCameraPosition = () ->
+	window.setNeutralCameraPosition = () ->
 		# Follow floating path around
 		timer = 0.0001 * Date.now()
 		cam.position.x = Math.sin(timer) * 25
@@ -335,7 +272,7 @@ define [
 		cam.position.z = -100 + Math.cos(timer) * 20
 
 	# camera highlight fns
-	setHighlight = (full_name) ->
+	window.setHighlight = (full_name) ->
 		# Colors the object differently, but doesn't follow it.
 		mapped_obj = feature_map[full_name]
 		orbit_obj = mapped_obj['orbit']
@@ -349,7 +286,7 @@ define [
 			attributes.locked.value[idx] = 1.0
 
 	# camera locking fns
-	clearLock = (set_default_camera) ->
+	window.clearLock = (set_default_camera) ->
 		return if (!locked_object)
 
 		if (set_default_camera)
@@ -375,7 +312,7 @@ define [
 		# reset camera pos so subsequent locks don't get into crazy positions
 		setNeutralCameraPosition()
 
-	setLock = (full_name) ->
+	window.setLock = (full_name) ->
 		if (locked_object)
 			clearLock()
 
@@ -399,7 +336,7 @@ define [
 		scene.add(locked_object_ellipse)
 		camera_fly_around = true
 
-	startSimulation = () ->
+	window.startSimulation = () ->
 		if (!asteroids_loaded)
 			throw "couldn't start simulation: asteroids not loaded"
 		if (!workers_initialized)
@@ -442,7 +379,7 @@ define [
 		)
 		workers_initialized = true
 
-	handleSimulationResults = (e, particles) ->
+	window.handleSimulationResults = (e, particles) ->
 		data = e.data
 		switch data.type
 			when 'result'
@@ -466,7 +403,7 @@ define [
 			else
 				console.log('Invalid data type', data.type)
 
-	runAsteroidQuery = (sort) ->
+	window.runAsteroidQuery = (sort) ->
 		sort = sort || 'score'
 		$('#loading').show()
 
@@ -596,7 +533,7 @@ define [
 				$('#loading').hide()
 		)
 
-	createParticleSystem = () ->
+	window.createParticleSystem = () ->
 		# attributes
 		attributes = {
 			a:
@@ -698,7 +635,7 @@ define [
 		particleSystem.sortParticles = true
 		scene.add(particleSystem)
 
-	starTexture = (color, size) ->
+	window.starTexture = (color, size) ->
 		if size
 			size = parseInt(size*24)
 		else
@@ -719,14 +656,14 @@ define [
 		context.fillRect( 0, 0, canvas.width, canvas.height )
 		return canvas
 
-	changeJED = (new_jed) ->
+	window.changeJED = (new_jed) ->
 		jed = new_jed
 
-	setDefaultCameraPosition = () ->
+	window.setDefaultCameraPosition = () ->
 		cam.position.set(0, -155, 32)
 
 	# animation loop
-	animate = () ->
+	window.animate = () ->
 		if (!asteroids_loaded)
 			render()
 			requestAnimFrame(animate)
@@ -748,7 +685,7 @@ define [
 		requestAnimFrame(animate)
 
 	# render the scene
-	render = (force) ->
+	window.render = (force) ->
 		# update camera controls
 		cameraControls.update()
 
@@ -766,3 +703,22 @@ define [
 
 		# actually render the scene
 		renderer.render(scene, camera)
+
+	window.requestAnimFrame = (frame)()
+
+	init()
+	initGUI()
+
+	$('#btn-toggle-movement').on('click', () ->
+		object_movement_on = !object_movement_on
+	)
+	$('#controls .js-sort').on('click', () ->
+		runAsteroidQuery($(this).data('sort'))
+		$('#controls .js-sort').css('font-weight', 'normal')
+		$(this).css('font-weight', 'bold')
+	)
+
+	# 2012 Da14 feature
+	if (featured_2012_da14)
+		jed = toJED(new Date('2012-11-01'))
+		mixpanel.track('2012_da14 special')

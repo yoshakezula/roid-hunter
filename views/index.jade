@@ -9,6 +9,8 @@ body
 	noscript
 		| Sorry, this page requires Canvas/WebGL, so you'll need to enable JavaScript.
 
+	div#container
+
 	script(type="x-shader/x-fragment",id="fragmentshader")
 		| #define pi 3.141592653589793238462643383279
 
@@ -106,4 +108,4 @@ body
 		| 		gl_FragColor = vec4(vColor, 1.0) * texture2D(small_roid_circled_texture, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
 		| 	}
 		| }
-	script(data-main="js/app",src="js/vendor/require.js")
+	script(data-main="js/main",src="js/vendor/require.js")
