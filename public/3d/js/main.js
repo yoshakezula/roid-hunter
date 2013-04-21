@@ -90,7 +90,8 @@ $(function() {
       }
     });
     _.each(sorted_data, function(asteroid_data) {
-      var html = '<tr><td>' + asteroid_data["name"] + '</td>'
+      var html = '<tr class="asteroid-row" data-name="' + asteroid_data["name"] + '">'
+      html += '<td>' + asteroid_data["name"] + '</td>'
       html += '<td>' + asteroid_data[asteroid_sort]["dV"] + '</td>';
       html += '<td>' + asteroid_data[asteroid_sort]["days"] + '</td>';
       html += '<td>' + asteroid_data[asteroid_sort]["flight"]["launch"] + '</td>';
@@ -132,8 +133,33 @@ $(function() {
         asteroid_sort = $(e.target).attr('data-sort');
         populateTargetsTable();
       });
+      $('#asteroid-list').on('click', function(e){
+        var clickedAsteroid = $(e.target).closest('tr').attr('data-name');
+        if (targets_map[clickedAsteroid]) {
+          $('.asteroid-row-selected').removeClass('asteroid-row-selected');
+          $(e.target).closest('tr').addClass('asteroid-row-selected');
+          if ($('#asteroid-detail-wrapper').hasClass('asteroid-detail-active')) {
+            $('#asteroid-detail-wrapper').addClass('asteroid-detail-bounce');
+          } else {
+            $('#asteroid-detail-wrapper').addClass('asteroid-detail-active');
+          }
+         
+          setTimeout(function() {
+            $('#asteroid-detail-wrapper').removeClass('asteroid-detail-bounce');
+          }, 500);
 
-            
+          //Populate details
+          $('#asteroid-detail-title').html(targets_map[clickedAsteroid]['name']);
+          $('#ast-detail-days-out').html(targets_map[clickedAsteroid][asteroid_sort]['flight']['out']);
+          $('#ast-detail-stay').html(targets_map[clickedAsteroid][asteroid_sort]['flight']['stay']);
+          $('#ast-detail-days-back').html(targets_map[clickedAsteroid][asteroid_sort]['flight']['in']);
+          $('#ast-detail-diameter').html(targets_map[clickedAsteroid]['dia']);
+          $('#ast-detail-brightness').html(targets_map[clickedAsteroid]['H']);
+        }
+      });
+      $('#asteroid-detail-close').click(function() {
+        $('#asteroid-detail-close').removeClass('asteroid-detail-active')
+      });
 
       gui.add(text, 'display date').onChange(function(val) {
         var newdate = Date.parse(val);

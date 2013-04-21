@@ -126,18 +126,22 @@
         <button type="button" class="btn btn-inverse asteroid-sort-option" data-sort="mindV">Least Energy</button>
       </div>
     </div>
-    <div id="asteroid-detail-wrapper">
-      <div id="asteroid-detail-title">Name</div>
+    <div id="asteroid-detail-wrapper" class='animated'>
+      <div id="asteroid-detail-close">x</div>
+      <div id="asteroid-detail-title"></div>
       <div id="asteroid-detail-header">Trip</div>
       <div class="asteroid-detail-row">
         <div class="asteroid-detail-col">
-          <b>Days&nbsp;out</b><br>30
+          <b>Days&nbsp;out</b><br>
+          <span id="ast-detail-days-out"></span>
         </div>
         <div class="asteroid-detail-col">
-          <b>Stay</b><br>30
+          <b>Stay</b><br>
+          <span id="ast-detail-stay"></span>
         </div>
         <div class="asteroid-detail-col">
-          <b>Days&nbsp;back</b><br>30
+          <b>Days&nbsp;back</b><br>
+          <span id="ast-detail-days-back"></span>
         </div>
         <div class="clear"></div>
       </div>
@@ -145,10 +149,12 @@
       <div id="asteroid-detail-header">Asteroid Details</div>
       <div class="asteroid-detail-row">
         <div class="asteroid-detail-col">
-          <b>Diameter</b><br>25-40km
+          <b>Diameter (m)</b><br>
+          <span id="ast-detail-diameter"></span>
         </div>
         <div class="asteroid-detail-col">
-          <b>Brightness&nbsp;(H)</b><br>30
+          <b>Brightness&nbsp;(H)</b><br>
+          <span id="ast-detail-brightness"></span>
         </div>
         <div class="clear"></div>
       </div>

@@ -23,13 +23,32 @@ body
   font-weight bold
   padding 5px 10px
   max-width 70%
+#asteroid-detail-close
+  cursor pointer
+  position absolute
+  top 5px
+  right 5px
 
 #asteroid-detail-wrapper
-  background-color rgba(255,255,255,0.8)
+  background-color rgba(255,255,255,0.7)
   position absolute
   top 90px
   right 100px
   padding 5px
+  transform translateX(500px)
+  transition background-color, transform 0.5s
+  &.asteroid-detail-bounce
+    animation bounce 1s ease
+    animation-fill-mode both
+  &.asteroid-detail-active
+    transform translateX(0)
+  &:hover
+    background-color rgba(255,255,255,0.8)
+
+@keyframes bounce
+  0%, 20%, 50%, 80%, 100% {transform translateY(0)}
+  40% {transform translateY(-30px)}
+  60% {transform translateY(-15px)}
 
 #asteroid-detail-title
   font-weight bold
@@ -78,8 +97,10 @@ body
   display none !important
 #asteroid-list
   width 450px
-  background-color: rbga(1,1,1,0.5);
   color #ccc
+  transition background-color 0.4s
+  &:hover 
+    background-color rgba(0,0,0,0.5)
   thead 
     th
       vertical-align top
@@ -89,7 +110,7 @@ body
         cursor pointer
   tbody 
     tr
-      &:hover, &.selected-row
+      &:hover, &.asteroid-row-selected
         color #333
         cursor pointer
         background-color #f5f5f5
