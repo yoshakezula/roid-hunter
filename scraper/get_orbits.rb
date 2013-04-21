@@ -2,7 +2,11 @@ require 'open-uri'
 require 'json'
 require 'debugger'
 
-$list = {}
+orbital_data = {}
+
+f = File.open('../json/top_template.json', 'r')
+orbital_data_results = JSON.parse(f.read)
+debugger
 
 begin
   filename = 'targets'
@@ -11,8 +15,6 @@ begin
   data = JSON.parse(f.read)
 
   p data.length.to_s + ' asteroids being pulled'
-
-  orbital_data = {}
 
   data.each do |k, v|
     p 'Opening ' + v["name"]
