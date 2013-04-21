@@ -277,7 +277,7 @@
       scene.add(venus.getParticle());
     var earth = new Orbit3D(Ephemeris.earth,
         {
-          color: 0x009ACD, width: 1, jed: jed, object_size: 1.7,
+          color: 0x009ACD, width: 3, jed: jed, object_size: 1.7,
           texture_path: '/img/texture-earth.jpg',
           display_color: new THREE.Color(0x009ACD),
           particle_geometry: particle_system_geometry,
@@ -513,8 +513,8 @@
     locked_object_idx = mapped_obj['idx']; // this is the object's position in the added_objects array
     if (using_webgl) {
       locked_object_color = attributes.value_color.value[locked_object_idx];
-      attributes.value_color.value[locked_object_idx] = full_name === 'earth'
-        ? new THREE.Color(0x00ff00) : new THREE.Color(0xff0000);
+      attributes.value_color.value[locked_object_idx] = (full_name === 'earth'
+        ? new THREE.Color(0x00ff00) : new THREE.Color(0xff0000));
       locked_object_size = attributes.size.value[locked_object_idx];
       attributes.size.value[locked_object_idx] = 30.0;
       attributes.locked.value[locked_object_idx] = 1.0;
