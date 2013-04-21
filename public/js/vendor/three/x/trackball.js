@@ -103,7 +103,7 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 			}
 
-			_eye.copy( _this.object.position ).subSelf( _this.target );
+			_eye.copy( _this.object.position ).sub( _this.target );
 
 			var projection = _this.object.up.clone().setLength( mouseOnBall.y );
 			projection.addSelf( _this.object.up.clone().crossSelf( _eye ).setLength( mouseOnBall.x ) );
@@ -170,7 +170,7 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 		this.panCamera = function () {
 
-			var mouseChange = _panEnd.clone().subSelf( _panStart );
+			var mouseChange = _panEnd.clone().sub( _panStart );
 
 			if ( mouseChange.lengthSq() ) {
 
@@ -218,7 +218,7 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 		this.update = function () {
 
-			_eye.copy( _this.object.position ).subSelf( _this.target );
+			_eye.copy( _this.object.position ).sub( _this.target );
 
 			if ( !_this.noRotate ) {
 
@@ -238,7 +238,7 @@ define(['utilities/window','gl-capability','three','event-target'],function(wind
 
 			}
 
-			_this.object.position.add( _this.target, _eye );
+			_this.object.position.addVectors( _this.target, _eye );
 
 			_this.checkDistances();
 

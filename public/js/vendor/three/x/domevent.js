@@ -19,7 +19,7 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 	// # use the object oriented api
 	//
 	// You bind an event like this
-	//
+	// 
 	// ```mesh.on('click', function(object3d){ ... })```
 	//
 	// To unbind an event, just do
@@ -51,7 +51,7 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 	// First, you instanciate the object
 	//
 	// ```var domEvent = new THREEx.DomEvent();```
-	//
+	// 
 	// Then you bind an event like this
 	//
 	// ```domEvent.bind(mesh, 'click', function(object3d){ object3d.scale.x *= 2; });```
@@ -60,10 +60,13 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 	//
 	// ```domEvent.unbind(mesh, 'click', callback);```
 	//
-	//
+	// 
 	// # Code
 
 	//
+
+	/** @namespace */
+	var THREEx		= THREEx 		|| {};
 
 	// # Constructor
 	window.THREEx.DomEvent	= function(camera, domElement)
@@ -84,7 +87,6 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 		this._$onTouchMove	= function(){ _this._onTouchMove.apply(_this, arguments);	};
 		this._$onTouchStart	= function(){ _this._onTouchStart.apply(_this, arguments);	};
 		this._$onTouchEnd	= function(){ _this._onTouchEnd.apply(_this, arguments);	};
-		//this._$onScroll = function(){ _this._onScroll.apply(_this, arguments);	};
 		this._domElement.addEventListener( 'click'	, this._$onClick	, false );
 		this._domElement.addEventListener( 'dblclick'	, this._$onDblClick	, false );
 		this._domElement.addEventListener( 'mousemove'	, this._$onMouseMove	, false );
@@ -93,15 +95,6 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 		this._domElement.addEventListener( 'touchmove'	, this._$onTouchMove	, false );
 		this._domElement.addEventListener( 'touchstart'	, this._$onTouchStart	, false );
 		this._domElement.addEventListener( 'touchend'	, this._$onTouchEnd	, false );
-
-	  /*
-	    //adding the event listerner for Mozilla
-	    if(window.addEventListener)
-	        this._domElement.addEventListener('DOMMouseScroll', this._$onScroll, false);
-
-	    //for IE/OPERA etc
-	    this._domElement.onmousewheel = this._$onScroll;
-	    */
 	}
 
 	// # Destructor
@@ -164,7 +157,7 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 		console.assert( THREEx.DomEvent.eventNames.indexOf(eventName) !== -1, "not available events:"+eventName );
 
 		if( !this._objectCtxIsInit(object3d) )	this._objectCtxInit(object3d);
-		var objectCtx	= this._objectCtxGet(object3d);
+		var objectCtx	= this._objectCtxGet(object3d);	
 		if( !objectCtx[eventName+'Handlers'] )	objectCtx[eventName+'Handlers']	= [];
 
 		objectCtx[eventName+'Handlers'].push({
@@ -204,29 +197,6 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 		var objectCtx	= this._objectCtxGet(object3d);
 		if( !objectCtx )	return false;
 		return objectCtx[eventName+'Handlers'] ? true : false;
-	}
-
-	window.THREEx.DomEvent.prototype._onScroll = function(e) {
-	  var fovMAX = 300;
-	  var fovMIN = 40;
-	  var delta;
-	  if (!e) /* For IE. */
-	    e = window.event;
-	  if (e.wheelDelta) { /* IE/Opera. */
-	    delta = e.wheelDelta;
-	  } else if (e.detail) { /** Mozilla case. */
-	    /** In Mozilla, sign of delta is different than in IE.
-	     */
-	    delta = -e.detail*20;
-	  }
-	  //this._camera.fov -= delta * 0.05;
-	  //this._camera.fov = Math.max( Math.min(this._camera.fov, fovMAX ), fovMIN );
-	  //this._camera.projectionMatrix = new THREE.Matrix4().makePerspective(this._camera.fov, window.innerWidth / window.innerHeight, this._camera.near, this._camera.far);
-
-	  //this._camera.multiplyScalar(delta);
-
-
-	  return true;
 	}
 
 	/********************************************************************************/
@@ -392,43 +362,7 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 
 		var mouseX	= +(domEvent.touches[ 0 ].pageX / window.innerWidth ) * 2 - 1;
 		var mouseY	= -(domEvent.touches[ 0 ].pageY / window.innerHeight) * 2 + 1;
-		return this._onEvent(eventName, mouseX, mouseY, domEvent);
+		return this._onEvent(eventName, mouseX, mouseY, domEvent);	
 	}
 
-	/********************************************************************************/
-	// # Patch THREE.Object3D
-	/********************************************************************************/
-
-	// handle noConflit.
-	window.THREEx.DomEvent.noConflict	= function(){
-		THREEx.DomEvent.noConflict.symbols.forEach(function(symbol){
-			THREE.Object3D.prototype[symbol]	= THREEx.DomEvent.noConflict.previous[symbol]
-		})
-	}
-	// Backup previous values to restore them later if needed.
-	window.THREEx.DomEvent.noConflict.symbols	= ['on', 'off', 'addEventListener', 'removeEventListener'];
-	window.THREEx.DomEvent.noConflict.previous	= {};
-	window.THREEx.DomEvent.noConflict.symbols.forEach(function(symbol){
-		THREEx.DomEvent.noConflict.previous[symbol]	= THREE.Object3D.prototype[symbol]
-	})
-
-	// begin the actual patching of THREE.Object3D
-
-	// create the global instance of THREEx.DomEvent
-	//THREE.Object3D._threexDomEvent	= new THREEx.DomEvent(null, document.getElementById('container'));
-	window.THREE.Object3D._threexDomEvent	= new THREEx.DomEvent();
-
-	// # wrap mouseevents.bind()
-	window.THREE.Object3D.prototype.on	=
-	window.THREE.Object3D.prototype.addEventListener = function(eventName, callback){
-		THREE.Object3D._threexDomEvent.bind(this, eventName, callback);
-		return this;
-	}
-
-	// # wrap mouseevents.unbind()
-	window.THREE.Object3D.prototype.off	=
-	window.THREE.Object3D.prototype.removeEventListener	= function(eventName, callback){
-		THREE.Object3D._threexDomEvent.unbind(this, eventName, callback);
-		return this;
-	}
 });

@@ -3,7 +3,17 @@ define([
 	'three',
 	'lensflare-plugin',
 	'shadowmap-plugin',
+	'ribbon',
 	'sprite-plugin',
+	'lens-flare',
+	'buffer-geometry',
+	'mesh-face-material',
+	'mesh-depth-material',
+	'mesh-lamber-material',
+	'mesh-phong-material',
+	'mesh-normal-material',
+	'immediate-render-object',
+	'webglrender-target-cube',
 	'color'
 ], function(window) {
 	/**
