@@ -11,11 +11,14 @@ define([
 	'mesh-depth-material',
 	'mesh-lamber-material',
 	'data-texture',
+	'compressed-texture',
+	'skinned-mesh',
 	'mesh-phong-material',
 	'mesh-normal-material',
 	'immediate-render-object',
 	'webglrender-target-cube',
-	'color'
+	'color',
+	'fogexp2'
 ], function(window) {
 	/**
 	 * @author supereggbert / http://www.paulbrunt.co.uk/
@@ -4981,7 +4984,7 @@ define([
 
 				fog: fog,
 				useFog: material.fog,
-				fogExp: fog,
+				fogExp: fog instanceof THREE.FogExp2,
 
 				sizeAttenuation: material.sizeAttenuation,
 
@@ -6741,7 +6744,7 @@ define([
 
 					}
 
-				} else if ( texture.mipmaps ) {
+				} else if ( texture instanceof THREE.CompressedTexture ) {
 
 					// compressed textures can only use manually created mipmaps
 					// WebGL can't generate mipmaps for DDS textures
@@ -6838,7 +6841,7 @@ define([
 
 					_gl.pixelStorei( _gl.UNPACK_FLIP_Y_WEBGL, texture.flipY );
 
-					var isCompressed = texture.mipmaps;
+					var isCompressed = texture instanceof THREE.CompressedTexture;
 
 					var cubeImage = [];
 
@@ -6869,14 +6872,11 @@ define([
 
 							var mipmap, mipmaps = cubeImage[ i ].mipmaps;
 
-							if (mipmaps) {
+							for( var j = 0, jl = mipmaps.length; j < jl; j ++ ) {
 
-								for( var j = 0, jl = mipmaps.length; j < jl; j ++ ) {
+								mipmap = mipmaps[ j ];
+								_gl.compressedTexImage2D( _gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, j, glFormat, mipmap.width, mipmap.height, 0, mipmap.data );
 
-									mipmap = mipmaps[ j ];
-									_gl.compressedTexImage2D( _gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, j, glFormat, mipmap.width, mipmap.height, 0, mipmap.data );
-
-								}
 							}
 
 						} else {
@@ -7220,7 +7220,7 @@ define([
 
 				var maxBones = nVertexMatrices;
 
-				if ( object !== undefined && object.bones) {
+				if ( object !== undefined && object instanceof THREE.SkinnedMesh ) {
 
 					maxBones = Math.min( object.bones.length, maxBones );
 
@@ -7379,4 +7379,6 @@ define([
 		this.addPostPlugin( new THREE.LensFlarePlugin() );
 
 	};
+
+
 });

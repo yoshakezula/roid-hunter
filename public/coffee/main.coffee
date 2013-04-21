@@ -6,6 +6,7 @@ requirejs.config {
 		'leap'                           : 'vendor/leap'
 
 		'bone'                           : 'vendor/three/bone'
+		'fogexp2'                        : 'vendor/three/fogexp2'
 		'box3'                           : 'vendor/three/box3'
 		'bsp'                            : 'vendor/three/bsp'
 		'camera'                         : 'vendor/three/camera'
