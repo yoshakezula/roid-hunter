@@ -1,0 +1,123 @@
+@import "nib"
+@import "bootstrap-combined.min.css"
+
+// ----------------------------------------------------------------------------
+// Styles
+// ----------------------------------------------------------------------------
+
+body
+  font-family "Open Sans", "Helvetica Neue",Helvetica,Arial,sans-serif !important
+  user-select none
+  background-image url('/img/universe.jpg')
+  overflow hidden
+  padding 0
+  margin 0
+
+#loading
+  position fixed
+  top 50%
+  left 50%
+  color #000
+  background-color #fff
+  width 150px
+  height 40px
+  margin-top -20px
+  margin-left -75px
+  text-align center
+  padding 30px
+
+#app-wrapper
+  z-index 10
+  position absolute
+  top 10px
+  left 10px
+  margin-right 10px
+  width 100%
+
+#header
+  background-color rgba(255,255,255,0.8)
+  font-size 20px
+  font-weight bold
+  padding 5px 10px
+  max-width 70%
+
+#asteroid-detail-wrapper
+  background-color rgba(255,255,255,0.8)
+  position absolute
+  top 90px
+  right 100px
+  padding 5px
+
+#asteroid-detail-title
+  font-weight bold
+  font-size 18px
+  line-height 1.5
+
+#asteroid-detail-header
+  font-weight bold
+  margin-top 15px
+
+#leap-toggle
+  position absolute
+  z-index 100
+  bottom 10px
+  right 10px
+  padding 2px 5px
+  color black
+  background-color rgba(255,255,255,0.6)
+  cursor pointer
+  &.leap-disabled
+    background-color rgba(255,255,255,0.2)
+    &:hover 
+      background-color rgba(255,255,255,0.6)
+
+.asteroid-detail-row
+  margin-top
+
+.asteroid-detail-col
+  float left
+  margin-right 15px
+  b
+    color: #888
+
+.clear 
+  clear: both
+  height: 0
+  line-height: 0
+  font-size: 0
+  padding: 0
+  margin: 0
+  display: block
+
+#sidebar
+  margin-top 40px
+.close-button
+  display none !important
+#asteroid-list
+  width 450px
+  background-color: rbga(1,1,1,0.5);
+  color #ccc
+  thead 
+    th
+      vertical-align top
+      &:hover
+        background-color #f5f5f5
+        color #333
+        cursor pointer
+  tbody 
+    tr
+      &:hover, &.selected-row
+        color #333
+        cursor pointer
+        background-color #f5f5f5
+      &:nth-child(n+2) td
+        border-color #333
+  tr td, tr th
+    text-align center
+    .th-units
+      color #aaa
+      font-weight normal
+
+#asteroid-list-wrapper
+  margin-top 10px
+  

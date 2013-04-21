@@ -9,6 +9,62 @@ body
 	noscript
 		| Sorry, this page requires Canvas/WebGL, so you'll need to enable JavaScript.
 
+	#leap-toggle.leap-disabled Leap
+
+	#app-wrapper
+		#header NASA plans to lasso a 25ft asteroid in 2025. We're visualizing which asteroids are the easiest to reach.
+		#sidebar
+			.btn-group(data-toggle="buttons-radio")
+				button.btn.asteroid-sort-option(type="button",data-sort="minDur") Shortest Roundtrip
+				button.btn.btn-inverse.asteroid-sort-option(type="button",data-sort="mindV") Least Energy
+
+		#asteroid-detail-wrapper
+			#asteroid-detail-title Name
+			#asteroid-detail-header Trip
+			.asteroid-detail-row
+				.asteroid-detail-col
+					b Days&nbsp;out
+					br 
+					span 30
+				.asteroid-detail-col
+					b Stay
+					br 
+					span 30
+				.asteroid-detail-col
+					b Days&nbsp;back
+					br 
+					span 30
+				.clear
+			#asteroid-detail-header Asteroid Details
+			.asteroid-detail-row
+				.asteroid-detail-col
+					b Diameter
+					br 
+					span 30
+				.asteroid-detail-col
+					b Brightness&nbsp;(H)
+					br 
+					span 30
+				.clear
+		#asteroid-list-wrapper
+			table#asteroid-list.table.table-hover
+				thead
+					tr
+						th Name
+						th Energy for Trip
+							br
+							span.th-units dV (km/s)
+						th Mission Length
+							br
+							span.th-units Days
+						th Launch Date
+				tbody
+					tr.selected-row
+						td 2005 CD69
+						td 5.951
+						td 114
+						td Jul 22, 2029
+
 	div#container
 
 	script(type="x-shader/x-fragment",id="vertexshader")

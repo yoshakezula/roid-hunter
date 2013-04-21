@@ -6,6 +6,22 @@ BundleUp = require('bundle-up')
 lookup = require('./lookup.js')
 mailer = require('./mailer.js')
 fs = require('fs')
+nib = require('nib')
+stylus = require('stylus')
+
+
+# compile = (str, path) ->
+# 	stylus(str).set('filename', path).set('compress', true).use nib()
+
+app.use stylus.middleware
+	src: __dirname + '/public'
+	compile: (str, path) ->
+		stylus(str).set('filename', path).set('warn', true).set('compress', true).use(nib())
+
+# app.use stylus.middleware
+# 	src: __dirname + '/public/styl'
+# 	# dest: __dirname + 'public/css'
+# 	compile: compile
 
 # Change
 #
