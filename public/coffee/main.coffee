@@ -5,7 +5,9 @@ requirejs.config {
 		'underscore'                     : 'vendor/underscore'
 		'leap'                           : 'vendor/leap'
 
+		'sphere-geometry'                           : 'vendor/three/sphere-geometry'
 		'bone'                           : 'vendor/three/bone'
+		'ray'                           : 'vendor/three/ray'
 		'fogexp2'                        : 'vendor/three/fogexp2'
 		'box3'                           : 'vendor/three/box3'
 		'bsp'                            : 'vendor/three/bsp'

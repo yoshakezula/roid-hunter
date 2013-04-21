@@ -1,4 +1,4 @@
-define(['utilities/window','gl-capability','vector3','three','object3d','projector'],function(window) {
+define(['utilities/window','gl-capability','vector3','three','object3d','ray','projector'],function(window) {
 	// This THREEx helper makes it easy to handle the mouse events in your 3D scene
 	//
 	// * CHANGES NEEDED
@@ -210,8 +210,8 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 		var vector	= new THREE.Vector3( mouseX, mouseY, 1 );
 		this._projector.unprojectVector( vector, this._camera );
 
-		var ray		= new THREE.Ray( this._camera.position, vector.subSelf( this._camera.position ).normalize() );
-		var intersects = ray.intersectObjects( this._boundObjs );
+		var ray		= new THREE.Ray( this._camera.position, vector.sub( this._camera.position ).normalize() );
+		var intersects = [];
 
 		var oldSelected	= this._selected;
 
@@ -251,7 +251,7 @@ define(['utilities/window','gl-capability','vector3','three','object3d','project
 		var vector	= new THREE.Vector3( mouseX, mouseY, 1 );
 		this._projector.unprojectVector( vector, this._camera );
 
-		vector.subSelf( this._camera.position ).normalize()
+		vector.sub( this._camera.position ).normalize()
 		var ray		= new THREE.Ray( this._camera.position, vector );
 		var intersects	= ray.intersectObjects( this._boundObjs );
 

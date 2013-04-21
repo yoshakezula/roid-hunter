@@ -204,7 +204,8 @@
     //camera.position.set(-145, 41, -31);
     // 77, -155, 23
 
-    // THREE.Object3D._threexDomEvent.camera(camera);    // camera mouse handler
+    window.domEvents = new THREEx.DomEvent();
+    domEvents.camera(camera);    // camera mouse handler
     THREEx.WindowResize(renderer, camera);    // handle window resize
     // Fullscreen api
     if (THREEx.FullScreen.available()) {
@@ -255,34 +256,43 @@
     $('#loading-text').html('planets');
     var mercury = new Orbit3D(Ephemeris.mercury,
         {
-          color: 0x913CEE, width: 1, jed: jed, object_size: 1.7,
+          color: 0x913CEE,
+          width: 1,
+          jed: jed,
+          object_size: 1.7,
           texture_path: '/img/texture-mercury.jpg',
           display_color: new THREE.Color(0x913CEE),
           particle_geometry: particle_system_geometry,
           name: 'Mercury'
-        }, !using_webgl);
+        }, false);
     scene.add(mercury.getEllipse());
     if (!using_webgl)
       scene.add(mercury.getParticle());
     var venus = new Orbit3D(Ephemeris.venus,
         {
-          color: 0xFF7733, width: 1, jed: jed, object_size: 1.7,
+          color: 0xFF7733,
+          width: 1,
+          jed: jed,
+          object_size: 1.7,
           texture_path: '/img/texture-venus.jpg',
           display_color: new THREE.Color(0xFF7733),
           particle_geometry: particle_system_geometry,
           name: 'Venus'
-        }, !using_webgl);
+        }, false);
     scene.add(venus.getEllipse());
     if (!using_webgl)
       scene.add(venus.getParticle());
     var earth = new Orbit3D(Ephemeris.earth,
         {
-          color: 0x009ACD, width: 1, jed: jed, object_size: 1.7,
+          color: 0x009ACD,
+          width: 1,
+          jed: jed,
+          object_size: 1.7,
           texture_path: '/img/texture-earth.jpg',
           display_color: new THREE.Color(0x009ACD),
           particle_geometry: particle_system_geometry,
           name: 'Earth'
-        }, !using_webgl);
+        }, false);
     scene.add(earth.getEllipse());
     if (!using_webgl)
       scene.add(earth.getParticle());
@@ -292,23 +302,29 @@
     };
     var mars = new Orbit3D(Ephemeris.mars,
         {
-          color: 0xA63A3A, width: 1, jed: jed, object_size: 1.7,
+          color: 0xA63A3A,
+          width: 1,
+          jed: jed,
+          object_size: 1.7,
           texture_path: '/img/texture-mars.jpg',
           display_color: new THREE.Color(0xA63A3A),
           particle_geometry: particle_system_geometry,
           name: 'Mars'
-        }, !using_webgl);
+        }, false);
     scene.add(mars.getEllipse());
     if (!using_webgl)
       scene.add(mars.getParticle());
     var jupiter = new Orbit3D(Ephemeris.jupiter,
         {
-          color: 0xFF7F50, width: 1, jed: jed, object_size: 1.7,
+          color: 0xFF7F50,
+          width: 1,
+          jed: jed,
+          object_size: 1.7,
           texture_path: '/img/texture-jupiter.jpg',
           display_color: new THREE.Color(0xFF7F50),
           particle_geometry: particle_system_geometry,
           name: 'Jupiter'
-        }, !using_webgl);
+        }, false);
     scene.add(jupiter.getEllipse());
     if (!using_webgl)
       scene.add(jupiter.getParticle());
@@ -318,12 +334,15 @@
       // Special: 2012 DA14
       var asteroid_2012_da14 = new Orbit3D(Ephemeris.asteroid_2012_da14,
           {
-            color: 0xff0000, width: 1, jed: jed, object_size: 1.7,
+            color: 0xff0000,
+            width: 1,
+            jed: jed,
+            object_size: 1.7,
           texture_path: '/img/cloud4.png',
           display_color: new THREE.Color(0xff0000),
           particle_geometry: particle_system_geometry,
           name: '2012 DA14'
-          }, !using_webgl);
+          }, false);
       scene.add(asteroid_2012_da14.getEllipse());
       if (!using_webgl)
         scene.add(asteroid_2012_da14.getParticle());

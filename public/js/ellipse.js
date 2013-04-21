@@ -1,4 +1,4 @@
-define(['utilities/window','line-dashed-material','line','globals'], function(window) {
+define(['utilities/window','line-dashed-material','line','globals','sphere-geometry'], function(window) {
   "use strict";
 
   var Orbit3D = function(eph, opts, bigParticle) {
@@ -150,7 +150,7 @@ define(['utilities/window','line-dashed-material','line','globals'], function(wi
   }
 
   Orbit3D.prototype.getParticle = function() {
-    return this.particle;
+    return this.particle_geometry;
   }
 
   window.Orbit3D = Orbit3D;
