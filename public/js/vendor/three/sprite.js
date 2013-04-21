@@ -12,6 +12,7 @@ define(['utilities/window','three','sprite-material','object3d'],function(window
 
 		this.rotation3d = this.rotation;
 		this.rotation = 0;
+		this.color = new THREE.Color();
 
 	};
 
