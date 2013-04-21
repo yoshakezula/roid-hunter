@@ -143,65 +143,6 @@
       this['planet orbits'] = planet_orbits_visible;
       this['display date'] = '12/26/2012';
     };
-
-    window.onload = function() {
-      var text = new ViewUI();
-      var gui = new dat.GUI();
-
-      $.ajax({
-        url: '/top-targets',
-        success: function(data) {
-          targets_map = data;
-          populateTargetsTable();
-        },
-        dataType: 'json'
-      });
-
-      $('.asteroid-sort-option').click(function(e) {
-        asteroid_sort = $(e.target).attr('data-sort');
-        populateTargetsTable();
-      });
-      $('#asteroid-list').on('click', function(e){
-        var clickedAsteroid = $(e.target).closest('tr').attr('data-name');
-        if (targets_map[clickedAsteroid]) {
-          $('.asteroid-row-selected').removeClass('asteroid-row-selected');
-          $(e.target).closest('tr').addClass('asteroid-row-selected');
-          if ($('#asteroid-detail-wrapper').hasClass('asteroid-detail-active')) {
-            $('#asteroid-detail-wrapper').addClass('asteroid-detail-bounce');
-          } else {
-            $('#asteroid-detail-wrapper').addClass('asteroid-detail-active');
-          }
-
-          setTimeout(function() {
-            $('#asteroid-detail-wrapper').removeClass('asteroid-detail-bounce');
-          }, 1000);
-
-          //Populate details
-          $('#asteroid-detail-title').html(targets_map[clickedAsteroid]['name']);
-          $('#ast-detail-days-out').html(targets_map[clickedAsteroid][asteroid_sort]['flight']['out']);
-          $('#ast-detail-stay').html(targets_map[clickedAsteroid][asteroid_sort]['flight']['stay']);
-          $('#ast-detail-days-back').html(targets_map[clickedAsteroid][asteroid_sort]['flight']['in']);
-          $('#ast-detail-diameter').html(targets_map[clickedAsteroid]['dia']);
-          $('#ast-detail-brightness').html(targets_map[clickedAsteroid]['H']);
-        }
-      });
-      $('#asteroid-detail-close').click(function() {
-        $('#asteroid-detail-wrapper').removeClass('asteroid-detail-active');
-      });
-
-      gui.add(text, 'display date').onChange(function(val) {
-        var newdate = Date.parse(val);
-        if (newdate) {
-          var newjed = toJED(newdate);
-          changeJED(newjed);
-          if (!object_movement_on) {
-            render(true); // force rerender even if simulation isn't running
-          }
-        }
-      }).listen();
-      window.datgui = text;
-    }; // end window onload
-
   }
 
   function togglePlanetOrbits() {
@@ -974,5 +915,53 @@
     // actually render the scene
     renderer.render(scene, camera);
   }
+
+
+
+
+
+  console.log('request targets');
+  $.ajax({
+    url: '/top-targets',
+    success: function(data) {
+      targets_map = data;
+      console.log('got targets');
+      populateTargetsTable();
+    },
+    dataType: 'json'
+  });
+
+  $('.asteroid-sort-option').click(function(e) {
+    asteroid_sort = $(e.target).attr('data-sort');
+    populateTargetsTable();
+  });
+  $('#asteroid-list').on('click', function(e){
+    var clickedAsteroid = $(e.target).closest('tr').attr('data-name');
+    if (targets_map[clickedAsteroid]) {
+      $('.asteroid-row-selected').removeClass('asteroid-row-selected');
+      $(e.target).closest('tr').addClass('asteroid-row-selected');
+      if ($('#asteroid-detail-wrapper').hasClass('asteroid-detail-active')) {
+        $('#asteroid-detail-wrapper').addClass('asteroid-detail-bounce');
+      } else {
+        $('#asteroid-detail-wrapper').addClass('asteroid-detail-active');
+      }
+
+      setTimeout(function() {
+        $('#asteroid-detail-wrapper').removeClass('asteroid-detail-bounce');
+      }, 1000);
+
+      //Populate details
+      $('#asteroid-detail-title').html(targets_map[clickedAsteroid]['name']);
+      $('#ast-detail-days-out').html(targets_map[clickedAsteroid][asteroid_sort]['flight']['out']);
+      $('#ast-detail-stay').html(targets_map[clickedAsteroid][asteroid_sort]['flight']['stay']);
+      $('#ast-detail-days-back').html(targets_map[clickedAsteroid][asteroid_sort]['flight']['in']);
+      $('#ast-detail-diameter').html(targets_map[clickedAsteroid]['dia']);
+      $('#ast-detail-brightness').html(targets_map[clickedAsteroid]['H']);
+    }
+  });
+  $('#asteroid-detail-close').click(function() {
+    $('#asteroid-detail-wrapper').removeClass('asteroid-detail-active');
+  });
+
 });
 }).call(this);
