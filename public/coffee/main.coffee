@@ -3,6 +3,7 @@ requirejs.config {
 	paths:
 		'jquery'                         : 'vendor/jquery/jquery-2.0.0'
 		'underscore'                     : 'vendor/underscore'
+		'leap'                           : 'vendor/leap'
 
 		'bone'                           : 'vendor/three/bone'
 		'box3'                           : 'vendor/three/box3'
