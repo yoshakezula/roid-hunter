@@ -1,5 +1,20 @@
+
+	# script(src="js/vendor/jquery/jquery-2.0.0.js")
+	# script(src="js/Worker.js")
+	# script(src="js/ephemeris.js")
+	# script(src="js/ellipse.js")
+	# script(src="js/util.js")
+	# script(src="js/main.js")
+
+
 define [
 	'utilties/window'
+	'worker'
+	'ephemeris'
+	'util'
+	'jquery'
+	'three'
+	'dragpan'
 	], (window) ->
 		'use strict'
 

@@ -106,10 +106,4 @@ body
 		| 		gl_FragColor = vec4(vColor, 1.0) * texture2D(small_roid_circled_texture, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
 		| 	}
 		| }
-	script(src="vendor/vendor.min.js")
-	script(src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
-	script(src="js/Worker.js")
-	script(src="js/ephemeris.js")
-	script(src="js/ellipse.js")
-	script(src="js/util.js")
-	script(src="js/main.js")
+	script(data-main="js/app",src="js/vendor/require.js")
