@@ -1,4 +1,4 @@
-@import "bootstrap-combined.min.css";
+@import "vendor/bootstrap-combined.min.css";
 body{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif !important;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 #app-wrapper{z-index:10;position:absolute;top:10px;left:10px;margin-right:10px;width:100%}
 #header{background-color:rgba(255,255,255,0.8);font-size:20px;font-weight:bold;padding:5px 10px;max-width:70%}
