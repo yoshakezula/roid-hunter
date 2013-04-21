@@ -383,8 +383,9 @@
     var cameraRadius = 290;
     var rotateY = 90, rotateX = 0, curY = 0
     var fov = camera.fov;
-    var zoom = 0;
-    var zoomFactor = 0;
+    var zoom = 1;
+    var handDist = 0;
+    var zoomFactor = 1;
 
 
     function map(value, inputMin, inputMax, outputMin, outputMax) {
@@ -398,12 +399,23 @@
       return outVal;
     }
 
-    var controllerOptions = {enableGestures: true
+    var controllerOptions = {enableGestures: false
     };
     Leap.loop(controllerOptions, function(frame) {
       if (frame.valid && leap_enabled) {
         if (!firstValidFrame) firstValidFrame = frame
         var t = firstValidFrame.translation(frame)
+        if (frame.hands.length == 2 & frame.fingers.length > 7) {
+          var diff1 = Math.pow(frame.hands[0].sphereCenter[0] - frame.hands[1].sphereCenter[0], 2);
+          var diff2 = Math.pow(frame.hands[0].sphereCenter[1] - frame.hands[1].sphereCenter[1],2);
+          var diff3 = Math.pow(frame.hands[0].sphereCenter[2] - frame.hands[1].sphereCenter[2],2);
+          var dist = Math.sqrt(diff1 + diff2 + diff3);
+          zoomFactor = ( (dist / handDist) - 1)* 1 + 1;
+
+          zoom = Math.max(Math.min(zoom * zoomFactor, 1.2), 0.1);
+          handDist = dist;
+          // console.log(dist);
+        }
 
         //limit y-axis between 0 and 180 degrees
         curY = map(t[1], -300, 300, 0, 179)
@@ -413,17 +425,16 @@
         rotateY = -t[1]//-curY
         // console.log(rotateX, rotateY);
 
-
-
-        zoom = Math.max(0, t[2]);
+        // zoom = Math.max(0, t[2]);
         //lower the denom of zoom, higher the zoom degree
-        zoomFactor = 1/(1 + (zoom / 150));
-        // console.log(t[2], zoomFactor);
+        // zoomFactor = 1/(1 + (zoom / 150));
+        //We want the zoomfactor to be between 1 and ~0.3
+        console.log(zoomFactor);
 
         // //adjust 3D spherical coordinates of the camera
-        camera.position.x = zoomFactor * (cameraRadius * Math.sin(rotateY * .01) * Math.cos(rotateX * .01));
-        camera.position.z = zoomFactor * (cameraRadius * Math.sin(rotateY * .01) * Math.sin(rotateX * .01));
-        camera.position.y = zoomFactor * (cameraRadius * Math.cos(rotateY * .01));
+        camera.position.x = zoom * (cameraRadius * Math.sin(rotateY * .01) * Math.cos(rotateX * .01));
+        camera.position.z = zoom * (cameraRadius * Math.sin(rotateY * .01) * Math.sin(rotateX * .01));
+        camera.position.y = zoom * (cameraRadius * Math.cos(rotateY * .01));
         // lower fov = closer to center
         // camera.fov = fov * zoomFactor;
         // camera.updateProjectionMatrix();
@@ -437,6 +448,12 @@
     })
     $('html').on('mousedown', function() {
       camera_fly_around = false;
+    });
+    $('html').on('dblclick', function() {
+      clearLock();
+      camera_fly_around = true;
+      leap_enabled = false;
+      $('#leap-toggle').addClass('leap-disabled');
     });
 
     window.renderer = renderer;
