@@ -117,6 +117,12 @@ app.get('/top', function(req, res) {
   });
 });
 
+app.get('/top-targets', function(req, res) {
+  fs.readFile('json/targets.json', function(err, data) {
+    res.send(JSON.parse(data));
+  });
+});
+
 app.get('/summary', function(req, res) {
   // Homepage result summary
   lookup.homepage(function(err, result) {

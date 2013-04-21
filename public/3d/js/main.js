@@ -34,6 +34,7 @@ $(function() {
   var particle_system_geometry = null;
   var asteroids_loaded = false;
   var display_date_last_updated = 0;
+  var leap_enabled = false;
 
   // Lock/feature stuff
   var feature_map = {};       // map from object full name to Orbit3D instance
@@ -42,6 +43,9 @@ $(function() {
   var locked_object_idx = -1;
   var locked_object_size = -1;
   var locked_object_color = -1;
+
+  var targets_map = {};
+  var asteroid_sort = "minDur";
 
   // 2012 da14
   var featured_2012_da14 = getParameterByName('2012_DA14') === '1';
@@ -76,6 +80,25 @@ $(function() {
     mixpanel.track('2012_da14 special');
   }
 
+  function populateTargetsTable() {
+    $('#asteroid-list tbody').html('')
+    var sorted_data = _.sortBy(targets_map, function(asteroid) {
+      if (asteroid_sort == "minDur") {
+        return asteroid[asteroid_sort]["days"];
+      } else {
+        return asteroid[asteroid_sort]["dV"];
+      }
+    });
+    _.each(sorted_data, function(asteroid_data) {
+      var html = '<tr><td>' + asteroid_data["name"] + '</td>'
+      html += '<td>' + asteroid_data[asteroid_sort]["dV"] + '</td>';
+      html += '<td>' + asteroid_data[asteroid_sort]["days"] + '</td>';
+      html += '<td>' + asteroid_data[asteroid_sort]["flight"]["launch"] + '</td>';
+      html += '</tr>'
+      $('#asteroid-list tbody').append(html)
+    });
+  }
+
   function initGUI() {
     var ViewUI = function() {
       this['Cost effective'] = function() {
@@ -95,6 +118,22 @@ $(function() {
     window.onload = function() {
       var text = new ViewUI();
       var gui = new dat.GUI();
+
+      $.ajax({
+        url: '/top-targets',
+        success: function(data) {
+          targets_map = data;
+          populateTargetsTable();
+        },
+        dataType: 'json'
+      });
+
+      $('.asteroid-sort-option').click(function(e) {
+        asteroid_sort = $(e.target).attr('data-sort');
+        populateTargetsTable();
+      });
+
+            
 
       gui.add(text, 'display date').onChange(function(val) {
         var newdate = Date.parse(val);
@@ -351,9 +390,10 @@ $(function() {
       return outVal;
     } 
 
-    var controllerOptions = {enableGestures: true};
+    var controllerOptions = {enableGestures: true
+    };
     Leap.loop(controllerOptions, function(frame) {
-      if (frame.valid) {
+      if (frame.valid && leap_enabled) {
         if (!firstValidFrame) firstValidFrame = frame
         var t = firstValidFrame.translation(frame)
 
@@ -361,11 +401,11 @@ $(function() {
         curY = map(t[1], -300, 300, 0, 179)
 
         //assign rotation coordinates
-        rotateX = t[0]
-        rotateY = t[1]//-curY
+        rotateX = -t[0]
+        rotateY = -t[1]//-curY
         // console.log(rotateX, rotateY);
 
-        // lower fov = closer
+        
 
         zoom = Math.max(0, t[2]);
         //lower the denom of zoom, higher the zoom degree
@@ -376,16 +416,18 @@ $(function() {
         camera.position.x = zoomFactor * (cameraRadius * Math.sin(rotateY * .01) * Math.cos(rotateX * .01));
         camera.position.z = zoomFactor * (cameraRadius * Math.sin(rotateY * .01) * Math.sin(rotateX * .01));
         camera.position.y = zoomFactor * (cameraRadius * Math.cos(rotateY * .01));
-
-        console.log(zoomFactor);
+        // lower fov = closer to center
         // camera.fov = fov * zoomFactor;
         // camera.updateProjectionMatrix();
       }
     });
 
-    setInterval(function() {console.log(camera.position)},1000);
-
-    $('#container').on('mousedown', function() {
+    // setInterval(function() {console.log(camera.position)},1000);
+    $('#leap-toggle').click(function() {
+      leap_enabled = !leap_enabled;
+      $('#leap-toggle').toggleClass('leap-disabled');
+    })
+    $('html').on('mousedown', function() {
       camera_fly_around = false;
     });
 
@@ -445,7 +487,7 @@ $(function() {
     locked_object_color = null;
 
     // reset camera pos so subsequent locks don't get into crazy positions
-    // setNeutralCameraPosition();
+    setNeutralCameraPosition();
   }
 
   function setLock(full_name) {
@@ -854,7 +896,7 @@ $(function() {
         cameraControls.target = new THREE.Vector3(pos[0], pos[1], pos[2]);
       }
       else {
-        // setNeutralCameraPosition();
+        setNeutralCameraPosition();
       }
     }
 

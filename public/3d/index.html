@@ -113,19 +113,73 @@
       }
     }
   </script>
+  <div id="leap-toggle" class="leap-disabled">
+    Leap
+  </div>
   <div id="app-wrapper">
     <div id="header">
-      NASA plans to launch a mission to lasso a 25ft asteroid in 2025<br> We're visualizing which asteroids are the easiest to reach
+      NASA plans to lasso a 25ft asteroid in 2025. We're visualizing which asteroids are the easiest to reach
     </div>
     <div id="sidebar">
       <div class="btn-group" data-toggle="buttons-radio">
-        <button type="button" class="btn btn-primary">Shortest Roundtrip</button>
-        <button type="button" class="btn btn-primary">Least Energy</button>
+        <button type="button" class="btn asteroid-sort-option" data-sort="minDur">Shortest Roundtrip</button>
+        <button type="button" class="btn btn-inverse asteroid-sort-option" data-sort="mindV">Least Energy</button>
       </div>
     </div>
-    <div id="asteroid-list">
-      <table class="table">
-        
+    <div id="asteroid-detail-wrapper">
+      <div id="asteroid-detail-title">Name</div>
+      <div id="asteroid-detail-header">Trip</div>
+      <div class="asteroid-detail-row">
+        <div class="asteroid-detail-col">
+          <b>Days&nbsp;out</b><br>30
+        </div>
+        <div class="asteroid-detail-col">
+          <b>Stay</b><br>30
+        </div>
+        <div class="asteroid-detail-col">
+          <b>Days&nbsp;back</b><br>30
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="asteroid-detail-header">Asteroid Details</div>
+      <div class="asteroid-detail-row">
+        <div class="asteroid-detail-col">
+          <b>Diameter</b><br>25-40km
+        </div>
+        <div class="asteroid-detail-col">
+          <b>Brightness&nbsp;(H)</b><br>30
+        </div>
+        <div class="clear"></div>
+      </div>
+
+    </div>
+    <div id="asteroid-list-wrapper">
+      <table id="asteroid-list" class="table table-hover">
+        <thead>
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Energy for Trip<br><span class="th-units">dV (km/s)</span>
+            </th>
+            <th>
+              Mission Length<br><span class="th-units">(Days)</span>
+            </th>
+            <th>
+              Launch Date
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="selected-row">
+            <td>2005 CD69</td>
+            <td>5.951</td>
+            <td>114</td>
+            <td>Jul 22, 2029</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
@@ -166,6 +220,8 @@
   <script src="js/ephemeris.js"></script>
   <script src="js/ellipse.js"></script>
   <script src="js/util.js"></script>
+  <script src="js/underscore-min.js"></script>
+  <script src="js/leap.js"></script>
   <script src="js/main.js"></script>
 <script type="text/javascript">
 if(~document.location.href.indexOf('asterank.com')) {
