@@ -17,6 +17,19 @@ requirejs.config {
 		'quaternion'                     : 'vendor/three/quaternion'
 		'object3d'                       : 'vendor/three/object3d'
 		'matrix4'                        : 'vendor/three/matrix4'
+		'matrix3'                        : 'vendor/three/matrix3'
+		'projector'                        : 'vendor/three/projector'
+		'vector4'                        : 'vendor/three/vector4'
+		'vector2'                        : 'vendor/three/vector2'
+		'box3'                        : 'vendor/three/box3'
+		'frustum'                        : 'vendor/three/frustum'
+		'plane'                        : 'vendor/three/plane'
+		'color'                        : 'vendor/three/color'
+		'webglshaders'                        : 'vendor/three/webglshaders'
+		'webglrenderer'                        : 'vendor/three/webglrenderer'
+		'sprite-plugin'                        : 'vendor/three/sprite-plugin'
+		'shadowmap-plugin'                        : 'vendor/three/shadowmap-plugin'
+		'lensflare-plugin'                        : 'vendor/three/lensflare-plugin'
 }
 
 require ['app']

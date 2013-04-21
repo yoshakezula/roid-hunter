@@ -22,6 +22,7 @@ define [
 	'vector3'
 	'full-screen'
 	'quaternion'
+	'webglrenderer'
 	'trackball'
 	], (window) ->
 
