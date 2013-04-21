@@ -146,7 +146,7 @@ $(function() {
          
           setTimeout(function() {
             $('#asteroid-detail-wrapper').removeClass('asteroid-detail-bounce');
-          }, 500);
+          }, 1000);
 
           //Populate details
           $('#asteroid-detail-title').html(targets_map[clickedAsteroid]['name']);

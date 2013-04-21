@@ -8,7 +8,7 @@ body{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif !import
 #asteroid-detail-wrapper.asteroid-detail-active{-webkit-transform:translateX(0);-moz-transform:translateX(0);-o-transform:translateX(0);-ms-transform:translateX(0);transform:translateX(0)}
 #asteroid-detail-wrapper:hover{background-color:rgba(255,255,255,0.8)}
 #asteroid-detail-title{font-weight:bold;font-size:18px;line-height:1.5}
-#asteroid-detail-header{font-weight:bold;margin-top:15px}
+#asteroid-detail-header{font-weight:bold;margin-top:15px;border-bottom:1px solid #333}
 #leap-toggle{position:absolute;z-index:100;bottom:10px;right:10px;padding:2px 5px;color:#000;background-color:rgba(255,255,255,0.6);cursor:pointer;}
 #leap-toggle.leap-disabled{background-color:rgba(255,255,255,0.2);}
 #leap-toggle.leap-disabled:hover{background-color:rgba(255,255,255,0.6)}
