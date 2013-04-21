@@ -25,9 +25,7 @@ define ['utilities/window'], (window) ->
 	window.particle_system_geometry = null
 	window.asteroids_loaded = false
 	window.featured_2012_da14 = false
-	window.eph = {
-		e: false
-	}
+	window.eph = {}
 
 	# Lock/feature stuff
 	window.feature_map = {}       # map from object full name to Orbit3D instance
