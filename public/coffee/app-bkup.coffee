@@ -155,7 +155,7 @@ define [
 			sprite.scale.x = 50
 			sprite.scale.y = 50
 			sprite.scale.z = 1
-			# sprite.color.setHSV(1.0, 0.0, 1.0)
+			sprite.color.setHSL(1.0, 0.0, 1.0)
 			sun.add(sprite)
 			scene.add(sun)
 		else
