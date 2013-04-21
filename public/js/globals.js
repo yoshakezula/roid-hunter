@@ -59,6 +59,20 @@
       P: 365.256
     },
 
+    mars_mission:{
+      full_name: 'Mars Mission',
+      ma: 19.39019754,
+      epoch: 2451545.0,
+      a: 1.52371034,
+      e: 0.09339410,
+      i: 1.84969142,
+      w_bar: -23.94362959,   // longitude of perihelion
+      w: -73.5031685,   // argument of perihelion
+      L: -4.55343205,    // mean longitude
+      om: 49.55953891,    // longitude of ascending node
+      P: 686.980
+    },
+
     // http://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html
     // http://ssd.jpl.nasa.gov/txt/aprx_pos_planets.pdf
     mercury: {
