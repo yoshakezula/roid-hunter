@@ -34,6 +34,9 @@ requirejs.config {
 		'lensflare-plugin'               : 'vendor/three/lensflare-plugin'
 		'material'                       : 'vendor/three/material'
 		'shader-material'                : 'vendor/three/shader-material'
+		'shader-sprite'                : 'vendor/three/shader-sprite'
+		'shader-flares': 'vendor/three/shader-flares'
+		'scene': 'vendor/three/scene'
 }
 
 require ['app']

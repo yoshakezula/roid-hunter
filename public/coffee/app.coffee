@@ -21,6 +21,7 @@ define [
 	'window-resize'
 	'vector3'
 	'full-screen'
+	'scene'
 	'quaternion'
 	'webglrenderer'
 	'trackball'

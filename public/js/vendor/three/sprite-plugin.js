@@ -1,4 +1,4 @@
-define(['utilities/window','three','vector3'],function(window) {
+define(['utilities/window','three','vector3','shader-sprite'],function(window) {
 	/**
 	 * @author mikael emtinger / http://gomo.se/
 	 * @author alteredq / http://alteredqualia.com/
