@@ -4,7 +4,6 @@
     'utilities/window',
     'globals',
     'worker',
-    'ephemeris',
     'ellipse',
     'util',
     'jquery',
