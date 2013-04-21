@@ -12,6 +12,7 @@ define [
 	'globals'
 	'worker'
 	'ephemeris'
+	'ellipse'
 	'util'
 	'jquery'
 	'detector'
@@ -22,9 +23,13 @@ define [
 	'vector3'
 	'full-screen'
 	'scene'
+	'sprite'
+	'geometry'
 	'quaternion'
 	'webglrenderer'
 	'trackball'
+	'perspective-camera'
+	'image-utils'
 	], (window) ->
 
 	'use strict'
@@ -139,7 +144,7 @@ define [
 		if (using_webgl)
 			$('#loading-text').html('sun')
 			sun = new THREE.Object3D()
-			texture = THREE.ImageUtils.loadTexture("/images/sunsprite.png")
+			texture = THREE.ImageUtils.loadTexture("/img/sunsprite.png")
 			sprite = new THREE.Sprite({
 				map: texture,
 				blending: THREE.AdditiveBlending,
@@ -148,7 +153,7 @@ define [
 			sprite.scale.x = 50
 			sprite.scale.y = 50
 			sprite.scale.z = 1
-			sprite.color.setHSV(1.0, 0.0, 1.0)
+			# sprite.color.setHSV(1.0, 0.0, 1.0)
 			sun.add(sprite)
 			scene.add(sun)
 		else
@@ -166,7 +171,7 @@ define [
 		mercury = new Orbit3D(Ephemeris.mercury,
 				{
 					color: 0x913CEE, width: 1, jed: jed, object_size: 1.7,
-					texture_path: '/images/texture-mercury.jpg',
+					texture_path: '/img/texture-mercury.jpg',
 					display_color: new THREE.Color(0x913CEE),
 					particle_geometry: particle_system_geometry,
 					name: 'Mercury'}, !using_webgl)
@@ -176,7 +181,7 @@ define [
 		venus = new Orbit3D(Ephemeris.venus,
 				{
 					color: 0xFF7733, width: 1, jed: jed, object_size: 1.7,
-					texture_path: '/images/texture-venus.jpg',
+					texture_path: '/img/texture-venus.jpg',
 					display_color: new THREE.Color(0xFF7733),
 					particle_geometry: particle_system_geometry,
 					name: 'Venus'}, !using_webgl)
@@ -186,7 +191,7 @@ define [
 		earth = new Orbit3D(Ephemeris.earth,
 				{
 					color: 0x009ACD, width: 1, jed: jed, object_size: 1.7,
-					texture_path: '/images/texture-earth.jpg',
+					texture_path: '/img/texture-earth.jpg',
 					display_color: new THREE.Color(0x009ACD),
 					particle_geometry: particle_system_geometry,
 					name: 'Earth'}, !using_webgl)
@@ -199,7 +204,7 @@ define [
 		mars = new Orbit3D(Ephemeris.mars,
 				{
 					color: 0xA63A3A, width: 1, jed: jed, object_size: 1.7,
-					texture_path: '/images/texture-mars.jpg',
+					texture_path: '/img/texture-mars.jpg',
 					display_color: new THREE.Color(0xA63A3A),
 					particle_geometry: particle_system_geometry,
 					name: 'Mars'}, !using_webgl)
@@ -209,7 +214,7 @@ define [
 		jupiter = new Orbit3D(Ephemeris.jupiter,
 				{
 					color: 0xFF7F50, width: 1, jed: jed, object_size: 1.7,
-					texture_path: '/images/texture-jupiter.jpg',
+					texture_path: '/img/texture-jupiter.jpg',
 					display_color: new THREE.Color(0xFF7F50),
 					particle_geometry: particle_system_geometry,
 					name: 'Jupiter'}, !using_webgl)
@@ -223,7 +228,7 @@ define [
 			asteroid_2012_da14 = new Orbit3D(Ephemeris.asteroid_2012_da14,
 					{
 						color: 0xff0000, width: 1, jed: jed, object_size: 1.7,
-					texture_path: '/images/cloud4.png',
+					texture_path: '/img/cloud4.png',
 					display_color: new THREE.Color(0xff0000),
 					particle_geometry: particle_system_geometry,
 					name: '2012 DA14'}, !using_webgl)
@@ -237,7 +242,7 @@ define [
 
 		# Sky
 		if (using_webgl)
-			path = "/images/dark-s_"
+			path = "/img/dark-s_"
 			format = '.jpg'
 			urls = [
 					path + 'px' + format, path + 'nx' + format,
@@ -368,6 +373,7 @@ define [
 		l = added_objects.length
 		objects_per_worker = Math.ceil(l / NUM_WORKERS)
 		remainder = l % NUM_WORKERS
+		i = 0
 		while(i < NUM_WORKERS)
 			workers[i] = new Worker(worker_path)
 			start = i*objects_per_worker
@@ -590,10 +596,10 @@ define [
 				value: Ephemeris.earth.om
 			small_roid_texture:
 				type: "t"
-				value: THREE.ImageUtils.loadTexture("/images/cloud4.png")
+				value: THREE.ImageUtils.loadTexture("/img/cloud4.png")
 			small_roid_circled_texture:
 				type: "t",
-				value: THREE.ImageUtils.loadTexture("/images/cloud4-circled.png")
+				value: THREE.ImageUtils.loadTexture("/img/cloud4-circled.png")
 		}
 
 		vertexshader = document.getElementById( 'vertexshader' ).textContent

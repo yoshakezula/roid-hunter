@@ -24,7 +24,10 @@ define ['utilities/window'], (window) ->
 	window.jed = false
 	window.particle_system_geometry = null
 	window.asteroids_loaded = false
-	window.display_date_last_updated = 0
+	window.featured_2012_da14 = false
+	window.eph = {
+		e: false
+	}
 
 	# Lock/feature stuff
 	window.feature_map = {}       # map from object full name to Orbit3D instance
@@ -41,7 +44,7 @@ define ['utilities/window'], (window) ->
 	window.works = []
 	window.workers = []
 	window.NUM_WORKERS = 3
-	window.worker_path = '/3d/js/position_worker.js'
+	window.worker_path = '/js/position_worker.js'
 	window.workers_initialized = false
 	window.particleSystem = false
 
@@ -58,3 +61,10 @@ define ['utilities/window'], (window) ->
 	window.jed_threshold = false
 	window.running = true
 	window.simulationData = null
+
+	window.pi = Math.PI
+	window.PIXELS_PER_AU = 50
+	window.USE_REAL_ELLIPSE = true
+
+	window.attributes = false
+	window.uniforms = false
