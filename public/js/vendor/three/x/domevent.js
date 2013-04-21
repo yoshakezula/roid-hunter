@@ -1,4 +1,4 @@
-define(['utilities/window','gl-capability','vector3','three','object3d'],function(window) {
+define(['utilities/window','gl-capability','vector3','three','object3d','projector'],function(window) {
 	// This THREEx helper makes it easy to handle the mouse events in your 3D scene
 	//
 	// * CHANGES NEEDED

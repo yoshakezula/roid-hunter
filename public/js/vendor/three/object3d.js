@@ -1,4 +1,4 @@
-define(['utilities/window','three'],function(window) {
+define(['utilities/window','matrix4','three'],function(window) {
 	/**
 	 * @author mrdoob / http://mrdoob.com/
 	 * @author mikael emtinger / http://gomo.se/
