@@ -1,4 +1,4 @@
-define(['utilities/window','three'],function(window) {
+define(['utilities/window','three','uniforms-lib','uniforms-utils','shader-chunk'],function(window) {
 
 	/**
 	 * @author alteredq / http://alteredqualia.com/

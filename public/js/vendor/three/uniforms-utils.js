@@ -1,4 +1,4 @@
-define(['utilities/window','three'],function(window) {
+define(['utilities/window','three','color','vector2','vector3','vector4','matrix4'],function(window) {
 	/**
 	 * @author alteredq / http://alteredqualia.com/
 	 * @author mrdoob / http://mrdoob.com/

@@ -1,4 +1,4 @@
-define(['utilities/window','three'],function(window) {
+define(['utilities/window','three','vector4','vector2','color'],function(window) {
 
 	window.THREE.UniformsLib = {
 

@@ -51,6 +51,13 @@ requirejs.config {
 		'sprite-plugin'                  : 'vendor/three/sprite-plugin'
 		'texture'                        : 'vendor/three/texture'
 		'three'                          : 'vendor/three/three'
+
+		'mesh'                        : 'vendor/three/mesh'
+		'mesh-basic-material'                        : 'vendor/three/mesh-basic-material'
+		'cube-geometry'                        : 'vendor/three/cube-geometry'
+		'face3'                        : 'vendor/three/face3'
+		'face4'                        : 'vendor/three/face4'
+
 		'trackball'                      : 'vendor/three/x/trackball'
 		'vector2'                        : 'vendor/three/vector2'
 		'vector3'                        : 'vendor/three/vector3'

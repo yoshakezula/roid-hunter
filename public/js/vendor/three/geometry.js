@@ -1,4 +1,4 @@
-define(['utilities/window','three','vector3','event-dispatcher','sphere'], function(window) {
+define(['utilities/window','three','vector3','event-dispatcher','sphere','face3'], function(window) {
 	/**
 	 * @author mrdoob / http://mrdoob.com/
 	 * @author kile / http://kile.stravaganza.org/
