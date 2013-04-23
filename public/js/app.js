@@ -126,6 +126,7 @@
       html += '</tr>'
       $('#asteroid-list tbody').append(html)
     });
+    $('.asteroid-row:nth-child(1)').addClass('asteroid-row-selected');
   }
 
   function initGUI() {
@@ -402,61 +403,92 @@
     var controllerOptions = {enableGestures: false
     };
     Leap.loop(controllerOptions, function(frame) {
-      if (frame.valid && leap_enabled) {
-        if (!firstValidFrame) firstValidFrame = frame
-        var t = firstValidFrame.translation(frame)
-        if (frame.hands.length == 2 & frame.fingers.length > 7) {
-          var diff1 = Math.pow(frame.hands[0].sphereCenter[0] - frame.hands[1].sphereCenter[0], 2);
-          var diff2 = Math.pow(frame.hands[0].sphereCenter[1] - frame.hands[1].sphereCenter[1],2);
-          var diff3 = Math.pow(frame.hands[0].sphereCenter[2] - frame.hands[1].sphereCenter[2],2);
-          var dist = Math.sqrt(diff1 + diff2 + diff3);
-          zoomFactor = ( (dist / handDist) - 1)* 1 + 1;
-
-          zoom = Math.max(Math.min(zoom * zoomFactor, 1.2), 0.1);
-          handDist = dist;
-          // console.log(dist);
+      if (frame.valid) {
+        if ((!leap_enabled || locked_object) && frame.fingers.length > 4) {
+          enableLeap();
         }
+        if (frame.gestures.length > 0) {
+          //Set a threshold of 2 fingers allowed in frame so we dont accidentally trigger a gesture
+          if (frame.gestures[0].type == 'circle' && frame.fingers.length < 3) {
+            disableLeap();
+          }
+          //Set a threshold of 2 fingers allowed in frame so we dont accidentally trigger a gesture
+          if (frame.gestures[0].type == 'keyTap' && frame.fingers.length < 3) {
+            $('.asteroid-row-selected').next('tr').click();
+            //Select next row
+          } 
+          if (frame.gestures[0].type == 'swipe') {
+            if (frame.gestures[0].speed > 700 && frame.gestures[0].direction[0] < 0 && frame.gestures[0].direction[1] < 0 && frame.gestures[0].direction[2] < 0) {
+              // console.log('swipe down');
+            } else if (frame.gestures[0].speed > 800 && frame.gestures[0].direction[0] > 0 && frame.gestures[0].direction[1] > 0 && frame.gestures[0].direction[2] > 0) {
+              $('.asteroid-row:nth-child(1)').click();
+              // console.log('swipe up');
+            }
+            //Threshold above 1000
+            // console.log(frame.gestures[0].direction.speed);
+          }
+        }
+        if (leap_enabled) {
+          if (!firstValidFrame) firstValidFrame = frame
+          var t = firstValidFrame.translation(frame)
+          if (frame.hands.length > 0) {
+            // var velocity = Math.abs(frame.hands[0].palmVelocity[0]) + Math.abs(frame.hands[0].palmVelocity[1]) + Math.abs(frame.hands[0].palmVelocity[2])
+            //Calculate zoom using 2 hands
+            // var diff1 = Math.pow(frame.hands[0].sphereCenter[0] - frame.hands[1].sphereCenter[0], 2);
+            // var diff2 = Math.pow(frame.hands[0].sphereCenter[1] - frame.hands[1].sphereCenter[1],2);
+            // var diff3 = Math.pow(frame.hands[0].sphereCenter[2] - frame.hands[1].sphereCenter[2],2);
+            // // var dist = Math.sqrt(diff1 + diff2 + diff3);
 
-        //limit y-axis between 0 and 180 degrees
-        curY = map(t[1], -300, 300, 0, 179)
+            //Calc zoom using fist
+            var dist = frame.hands[0].sphereRadius
+            zoomFactor = ( (dist / handDist) - 1)* 3 + 1;
 
-        //assign rotation coordinates
-        rotateX = -t[0]
-        rotateY = -t[1]//-curY
-        // console.log(rotateX, rotateY);
+            handDist = dist;
 
-        // zoom = Math.max(0, t[2]);
-        //lower the denom of zoom, higher the zoom degree
-        // zoomFactor = 1/(1 + (zoom / 150));
-        //We want the zoomfactor to be between 1 and ~0.3
-        console.log(zoomFactor);
+            if (frame.fingers.length > 1) {
+              zoom = Math.max(Math.min(zoom * zoomFactor, 1.5), 0.1);
+            }
+            //limit y-axis between 0 and 180 degrees
+            curY = map(t[1], -300, 300, 0, 179)
 
-        // //adjust 3D spherical coordinates of the camera
-        camera.position.x = zoom * (cameraRadius * Math.sin(rotateY * .01) * Math.cos(rotateX * .01));
-        camera.position.z = zoom * (cameraRadius * Math.sin(rotateY * .01) * Math.sin(rotateX * .01));
-        camera.position.y = zoom * (cameraRadius * Math.cos(rotateY * .01));
-        // lower fov = closer to center
-        // camera.fov = fov * zoomFactor;
-        // camera.updateProjectionMatrix();
+            //assign rotation coordinates
+            rotateX = -t[0]
+            rotateY = -t[1]//-curY
+
+            // //adjust 3D spherical coordinates of the camera
+            camera.position.x = zoom * (cameraRadius * Math.sin(rotateY * .01) * Math.cos(rotateX * .01));
+            camera.position.z = zoom * (cameraRadius * Math.sin(rotateY * .01) * Math.sin(rotateX * .01));
+            camera.position.y = zoom * (cameraRadius * Math.cos(rotateY * .01));
+          }
+        }
       }
     });
 
     // setInterval(function() {console.log(camera.position)},1000);
     $('#leap-toggle').click(function() {
-      leap_enabled = !leap_enabled;
-      $('#leap-toggle').toggleClass('leap-disabled');
+      if ($('#leap-toggle').hasClass('leap-disabled')) {
+        enableLeap();
+      } else {
+        disableLeap();
+      }
     })
     $('html').on('mousedown', function() {
       camera_fly_around = false;
     });
-    $('html').on('dblclick', function() {
-      clearLock();
-      camera_fly_around = true;
-      leap_enabled = false;
-      $('#leap-toggle').addClass('leap-disabled');
-    });
-
+    $('html').on('dblclick', disableLeap);
     window.renderer = renderer;
+  }
+
+  function enableLeap() {
+    camera_fly_around = false;
+    leap_enabled = true;
+    $('#leap-toggle').removeClass('leap-disabled');
+  }
+  function disableLeap() {
+    clearLock();
+    camera_fly_around = true;
+    leap_enabled = false;
+    $('#leap-toggle').addClass('leap-disabled');
   }
 
   function setNeutralCameraPosition() {
