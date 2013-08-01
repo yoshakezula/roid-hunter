@@ -1,5 +1,5 @@
 requirejs.config {
-	baseUrl: 'public/js',
+	baseUrl: '/js',
 	paths:
 		'jquery'                         : 'vendor/jquery/jquery-2.0.0'
 		'underscore'                     : 'vendor/underscore'
