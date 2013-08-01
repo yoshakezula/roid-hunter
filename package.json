@@ -1,22 +1,20 @@
 {
-    "name": "App"
-  , "dependencies": {
-      "express": "2.5.2"
-      , "connect": "2.x"
-      , "connect-gzip": "latest"
-      , "jade": "0.26.3"
-      , "underscore": "latest"
-      , "connect-redis": "1.2.0"
-      , "redis-url": "latest"
-      , "mongolian": "latest"
-      , "sendmail": "latest"
-      , "bundle-up": "latest"
-      , "stylus": "latest"
-      , "nib": "latest"
-    }
-  , "devDependencies": {
-    }
-  , "main": "app"
-  , "engines": { "node": ">= 0.4.0" }
-  , "version": "0.0.1"
+  "name": "Roid_Hunter",
+  "author": "Kenny Chan, Jason Pearson, David Huerta",
+  "version": "0.1.0",
+  "main": "server.coffee",
+  "repository": "git@github.com:yoshakezula/roid-hunter.git",
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
+  },
+  "dependencies": {
+    "coffee-script": "1.6.x",
+    "express": "~3.1.2",
+    "connect-gzip": "latest", 
+    "jade": "0.28.x",
+    "stylus": "0.32.x",
+    "nib": "0.9.x",
+    "request": "2.16.x"
+  }
 }
